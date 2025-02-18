@@ -18,7 +18,7 @@ import control.ReportsExport;
 
 public class FrmWinesPreferences extends JInternalFrame {
 
-    private JButton btnExportReport;
+    //private JButton btnExportReport;
     private JButton btnShowReport;
     private JLabel lblSelectedFoods;
     private JLabel lblSelectedOccasions;
@@ -92,7 +92,7 @@ public class FrmWinesPreferences extends JInternalFrame {
             }
         });
         
-        // כפתור ייצוא דו"ח
+        /*// כפתור ייצוא דו"ח
         btnExportReport = new JButton("Export Report");
         btnExportReport.addActionListener(new ActionListener() {
             @Override
@@ -100,7 +100,7 @@ public class FrmWinesPreferences extends JInternalFrame {
                 exportReport();
             }
         });
-		
+		*/
         
      // הגדרת הגבלה לכל כפתור עם הוספת רווחים
         gbc.gridx = 0;
@@ -119,10 +119,11 @@ public class FrmWinesPreferences extends JInternalFrame {
         gbc.gridy = 1;
         panelButtons.add(btnShowReport, gbc);
         
-        gbc.gridx = 1; 
+       /* gbc.gridx = 1; 
         gbc.gridy = 2;
         panelButtons.add(btnExportReport, gbc);
-
+		*/
+        
         // הוספת פאנל הכפתורים למסך
         add(panelButtons, BorderLayout.SOUTH);
         setVisible(true);
@@ -344,6 +345,7 @@ public class FrmWinesPreferences extends JInternalFrame {
         }
     }
 
+    /*
     public void exportReport() {
     	 boolean success = ReportsExport.getInstance().exportReport(ReportsExport.filterWines(selectedWineTypes, selectedFoods, selectedOccasions));
 
@@ -353,6 +355,6 @@ public class FrmWinesPreferences extends JInternalFrame {
     	        JOptionPane.showMessageDialog(this, "Failed to export report.", "Error", JOptionPane.ERROR_MESSAGE);
     	    }
     }
-   
+  */ 
 }
 

@@ -26,11 +26,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="UCanAccess-5.0.1.bin/ucanaccess-5.0.1.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="UCanAccess-5.0.1.bin/lib/commons-lang3-3.8.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -67,6 +62,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="jgoodies-common-1_8_1/jgoodies-common-1.8.1/jgoodies-common-1.8.1-tests.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="UCanAccess-5.0.1.bin/ucanaccess-5.0.1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

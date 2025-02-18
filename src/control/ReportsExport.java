@@ -77,7 +77,47 @@ public class ReportsExport {
     }
 
 	
+	 // מתודה לייצוא דו"ח PDF
+	/* 
+    public boolean exportReport(ArrayList<Wine> filterdWines) {
+    	try {
+            // 1. יצירת מקור נתונים (JRDataSource) על בסיס רשימת היינות
+            JRDataSource dataSource = new JRBeanCollectionDataSource(filterdWines);
 
+         // 2. טעינת טמפלט Jasper (הקובץ JRXML) - שימוש ב-InputStream
+            InputStream reportStream = null;
+            try {
+                reportStream = getClass().getResourceAsStream("/boundary/preferencesWinesReport.jrxml");
+
+                if (reportStream == null) {
+                    throw new FileNotFoundException("The JRXML was not found");
+                }
+            } catch (FileNotFoundException e) {
+                System.err.println("The file was not found: " + e.getMessage());
+                return false;
+            }
+
+            JasperReport jasperReport = JasperCompileManager.compileReport(reportStream);
+
+            // 3. הכנת פרמטרים (אם יש צורך - במקרה שלנו אין)
+            HashMap<String, Object> parameters = new HashMap<>();
+
+            // 4. יצירת JasperPrint על בסיס הדו"ח והנתונים
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+
+            // 5. יצירת קובץ PDF
+            JasperExportManager.exportReportToPdfFile(jasperPrint, "output/wine_report.pdf");
+
+            // 6. אם רוצים להציג את הדו"ח ב-Viewer
+            JasperViewer.viewReport(jasperPrint, false);
+            return true;
+        } catch (JRException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+*/
 }
 
 
