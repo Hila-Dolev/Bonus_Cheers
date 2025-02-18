@@ -1,0 +1,250 @@
+<manufacturers>
+    <manufacturer>
+        <UniqueIdentifier>60</UniqueIdentifier>
+        <name>Golan Heights Winery</name>
+        <phoneNumber>+972-4-998-0000</phoneNumber>
+        <address>Golan Heights, Israel</address>
+        <email>info@golanwines.com</email>
+        <wines>
+            <wine>
+                <catalogNumber>101</catalogNumber>
+                <manufacturerNumber>1</manufacturerNumber>
+                <name>Cabernet Sauvignon</name>
+                <description>A rich red wine with bold flavors of black fruit.</description>
+                <productionYear>2018</productionYear>
+                <pricePerBottle>100.5</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/cab_sauv_2018.jpg</productImagePath>
+                <WineTypeID>1</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>102</catalogNumber>
+                <manufacturerNumber>1</manufacturerNumber>
+                <name>Chardonnay</name>
+                <description>A crisp, dry white wine with notes of apple and citrus.</description>
+                <productionYear>2019</productionYear>
+                <pricePerBottle>85.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/chardonnay_2019.jpg</productImagePath>
+                <WineTypeID>2</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>103</catalogNumber>
+                <manufacturerNumber>1</manufacturerNumber>
+                <name>Syrah</name>
+                <description>A full-bodied red wine with smoky and spicy notes.</description>
+                <productionYear>2020</productionYear>
+                <pricePerBottle>95.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/syrah_2020.jpg</productImagePath>
+                <WineTypeID>3</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>104</catalogNumber>
+                <manufacturerNumber>1</manufacturerNumber>
+                <name>Pinot Noir</name>
+                <description>A delicate red wine with earthy and fruity flavors.</description>
+                <productionYear>2021</productionYear>
+                <pricePerBottle>120.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/pinot_noir_2021.jpg</productImagePath>
+                <WineTypeID>4</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>105</catalogNumber>
+                <manufacturerNumber>1</manufacturerNumber>
+                <name>Riesling</name>
+                <description>A sweet white wine with floral and fruity notes.</description>
+                <productionYear>2017</productionYear>
+                <pricePerBottle>110.0</pricePerBottle>
+                <sweetnessLevel>SEMI_SWEET</sweetnessLevel>
+                <productImagePath>/images/riesling_2017.jpg</productImagePath>
+                <WineTypeID>5</WineTypeID>
+            </wine>
+        </wines>
+    </manufacturer>
+
+    <manufacturer>
+        <UniqueIdentifier>61</UniqueIdentifier>
+        <name>Carmel Winery</name>
+        <phoneNumber>+972-4-625-1911</phoneNumber>
+        <address>Zichron Yaakov, Israel</address>
+        <email>info@carmelwines.com</email>
+        <wines>
+            <wine>
+                <catalogNumber>201</catalogNumber>
+                <manufacturerNumber>2</manufacturerNumber>
+                <name>Sauvignon Blanc</name>
+                <description>A refreshing white wine with tropical fruit flavors.</description>
+                <productionYear>2020</productionYear>
+                <pricePerBottle>90.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/sauv_blanc_2020.jpg</productImagePath>
+                <WineTypeID>6</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>202</catalogNumber>
+                <manufacturerNumber>2</manufacturerNumber>
+                <name>Merlot</name>
+                <description>A smooth, velvety red with flavors of plum and cherry.</description>
+                <productionYear>2017</productionYear>
+                <pricePerBottle>110.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/merlot_2017.jpg</productImagePath>
+                <WineTypeID>7</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>203</catalogNumber>
+                <manufacturerNumber>2</manufacturerNumber>
+                <name>Chardonnay</name>
+                <description>A crisp, dry white wine with notes of apple and citrus.</description>
+                <productionYear>2019</productionYear>
+                <pricePerBottle>95.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/chardonnay_2019.jpg</productImagePath>
+                <WineTypeID>8</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>204</catalogNumber>
+                <manufacturerNumber>2</manufacturerNumber>
+                <name>Syrah</name>
+                <description>A full-bodied red wine with smoky and spicy notes.</description>
+                <productionYear>2021</productionYear>
+                <pricePerBottle>100.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/syrah_2021.jpg</productImagePath>
+                <WineTypeID>9</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>205</catalogNumber>
+                <manufacturerNumber>2</manufacturerNumber>
+                <name>Cabernet Sauvignon</name>
+                <description>A rich red wine with bold flavors of black fruit.</description>
+                <productionYear>2018</productionYear>
+                <pricePerBottle>105.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/cab_sauv_2018.jpg</productImagePath>
+                <WineTypeID>11</WineTypeID>
+            </wine>
+        </wines>
+    </manufacturer>
+
+    <manufacturer>
+        <UniqueIdentifier>62</UniqueIdentifier>
+        <name>Teperberg Winery</name>
+        <phoneNumber>+972-2-999-1111</phoneNumber>
+        <address>Jerusalem, Israel</address>
+        <email>info@teperbergwines.com</email>
+        <wines>
+            <wine>
+                <catalogNumber>301</catalogNumber>
+                <manufacturerNumber>3</manufacturerNumber>
+                <name>Cabernet Franc</name>
+                <description>A medium-bodied red wine with herbal and berry notes.</description>
+                <productionYear>2020</productionYear>
+                <pricePerBottle>110.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/cab_franc_2020.jpg</productImagePath>
+                <WineTypeID>12</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>302</catalogNumber>
+                <manufacturerNumber>3</manufacturerNumber>
+                <name>Pinot Noir</name>
+                <description>A delicate red wine with earthy and fruity flavors.</description>
+                <productionYear>2021</productionYear>
+                <pricePerBottle>120.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/pinot_noir_2021.jpg</productImagePath>
+                <WineTypeID>13</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>303</catalogNumber>
+                <manufacturerNumber>3</manufacturerNumber>
+                <name>Merlot</name>
+                <description>A smooth, velvety red with flavors of plum and cherry.</description>
+                <productionYear>2017</productionYear>
+                <pricePerBottle>105.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/merlot_2017.jpg</productImagePath>
+                <WineTypeID>14</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>304</catalogNumber>
+                <manufacturerNumber>3</manufacturerNumber>
+                <name>Chardonnay</name>
+                <description>A crisp, dry white wine with notes of apple and citrus.</description>
+                <productionYear>2019</productionYear>
+                <pricePerBottle>95.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/chardonnay_2019.jpg</productImagePath>
+                <WineTypeID>18</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>305</catalogNumber>
+                <manufacturerNumber>3</manufacturerNumber>
+                <name>Sauvignon Blanc</name>
+                <description>A refreshing white wine with tropical fruit flavors.</description>
+                <productionYear>2020</productionYear>
+                <pricePerBottle>90.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/sauv_blanc_2020.jpg</productImagePath>
+                <WineTypeID>111</WineTypeID>
+            </wine>
+        </wines>
+    </manufacturer>
+
+    <manufacturer>
+        <UniqueIdentifier>63</UniqueIdentifier>
+        <name>Psagot Winery</name>
+        <phoneNumber>+972-2-999-2222</phoneNumber>
+        <address>Jerusalem Hills, Israel</address>
+        <email>info@psagotwines.com</email>
+        <wines>
+            <wine>
+                <catalogNumber>401</catalogNumber>
+                <manufacturerNumber>4</manufacturerNumber>
+                <name>Cabernet Sauvignon</name>
+                <description>A rich red wine with bold flavors of black fruit.</description>
+                <productionYear>2018</productionYear>
+                <pricePerBottle>115.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/cab_sauv_2018.jpg</productImagePath>
+                <WineTypeID>112</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>402</catalogNumber>
+                <manufacturerNumber>4</manufacturerNumber>
+                <name>Syrah</name>
+                <description>A full-bodied red wine with smoky and spicy notes.</description>
+                <productionYear>2020</productionYear>
+                <pricePerBottle>120.0</pricePerBottle>
+                <sweetnessLevel>DRY</sweetnessLevel>
+                <productImagePath>/images/syrah_2020.jpg</productImagePath>
+                <WineTypeID>1111</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>403</catalogNumber>
+                <manufacturerNumber>4</manufacturerNumber>
+                <name>Merlot</name>
+                <description>A smooth, velvety red with flavors of plum and cherry.</description>
+                <productionYear>2019</productionYear>
+                <pricePerBottle>100.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/merlot_2019.jpg</productImagePath>
+                <WineTypeID>1112</WineTypeID>
+            </wine>
+            <wine>
+                <catalogNumber>404</catalogNumber>
+                <manufacturerNumber>4</manufacturerNumber>
+                <name>Pinot Noir</name>
+                <description>A delicate red wine with earthy and fruity flavors.</description>
+                <productionYear>2021</productionYear>
+                <pricePerBottle>125.0</pricePerBottle>
+                <sweetnessLevel>SEMI_DRY</sweetnessLevel>
+                <productImagePath>/images/pinot_noir_2021.jpg</productImagePath>
+                <WineTypeID>1113</WineTypeID>
+            </wine>
+        </wines>
+    </manufacturer>
+</manufacturers>
