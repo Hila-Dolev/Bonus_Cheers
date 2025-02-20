@@ -1,17 +1,28 @@
 package boundary;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.border.*;
+import javax.swing.text.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+
 import control.*;
 import entity.*;
 import javax.swing.text.*;
@@ -48,11 +59,35 @@ public class LoginFrame extends JFrame {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setBounds(100, 100, 450, 300);
-	    contentPane = new JPanel();
-	    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	    setContentPane(contentPane);
-	    contentPane.setLayout(null);
 
+	    //DESIGN
+	    // הוספת לוגו כ-Icon של החלון
+        ImageIcon logoIcon = new ImageIcon(getClass().getResource("/boundary/images/logo.png"));
+        this.setIconImage(logoIcon.getImage());
+        
+        // יצירת פאנל רקע עם תמונה
+        contentPane = new JPanel();
+        contentPane.setBackground(Color.decode("#e4d1c3")); 
+        
+
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
+        
+     // צבעים וגבולות כפתורים
+        Color buttonColor = Color.decode("#6f2936");
+        Color textColor = Color.WHITE;
+        Border buttonBorder = new LineBorder(Color.WHITE, 2);
+
+        UIManager.put("Button.background", buttonColor);
+        UIManager.put("Button.foreground", textColor);
+        UIManager.put("TextField.foreground", Color.BLACK);
+        UIManager.put("PasswordField.foreground", Color.BLACK);
+	    
+	    
+	    
+	    
+	    //FIELDS
 	    JLabel lblUsername = new JLabel("Username:");
 	    lblUsername.setBounds(50, 70, 100, 20);
 	    contentPane.add(lblUsername);
@@ -122,16 +157,31 @@ public class LoginFrame extends JFrame {
 
             if (isEmployee) {
             	Employee employee = PersonManagement.getInstance().getEmployeeDetailsById(userId);
-            	System.out.println(employee.getID());
-                if (employee != null && employee.getID() == passwordId) {
-                    determineEmployeeRole(employee);
+            	
+            	if (employee == null) {
+                    JOptionPane.showMessageDialog(this, "Sorry, no employee found with this ID. Please try again");
+                    return;
+                }
+            	
+            	if (employee != null && employee.getID() == passwordId) {
+            		 showWelcomeMessage(employee.getName());
+            		 determineEmployeeRole(employee);
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Employee ID or password");
                 }
+            	
+            	
             } else {
                 Customer customer = PersonManagement.getInstance().getCustomerDetailsById(userId);
+                
+                if (customer == null) {
+                    JOptionPane.showMessageDialog(this, "Sorry, no customer found with this ID. Please try again");
+                    return;
+                }
+                
                 if (customer != null && customer.getID() == passwordId) {
-                    openHomeScreen("Customer");
+                	showWelcomeMessage(customer.getName());
+                	openHomeScreen("Customer");
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Customer ID or password");
                 }
@@ -163,6 +213,23 @@ public class LoginFrame extends JFrame {
         homeScreen.setVisible(true);
         this.dispose();
     }
+    
+    private void showWelcomeMessage(String name) {
+        JDialog dialog = new JDialog(this, "Welcome", true);
+        dialog.setUndecorated(true);
+        JLabel label = new JLabel("Welcome, " + name + "!", JLabel.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setForeground(Color.decode("#6f2936"));
+        dialog.add(label);
+        dialog.setSize(250, 100);
+        dialog.setLocationRelativeTo(this);
+        
+        // יצירת תזמון לסגירת הדיאלוג לאחר 2 שניות
+        new Timer(2000, e -> dialog.dispose()).start();
+        
+        dialog.setVisible(true);
+    }
+
 
 
 
