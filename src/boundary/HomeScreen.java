@@ -30,6 +30,9 @@ public class HomeScreen extends JFrame{
     private JMenuItem menuItemWines = new JMenuItem("Wines");
     private JMenuItem menuItemManufacturers = new JMenuItem("Manufacturers");
     private JMenuItem menuItemPreferencesReport = new JMenuItem("Preferences Report");  
+    private JMenu menuOrders = new JMenu("Orders");
+    private JMenuItem menuItemRegularOrder = new JMenuItem("Regular Order");
+    private JMenuItem menuItemUrgentOrder = new JMenuItem("Urgent Order");
     private JMenu menuReports = new JMenu("Reports");
     private JLabel logoLabel = new JLabel();
     private JDesktopPane desktopPane = new JDesktopPane(); 
@@ -98,7 +101,20 @@ public class HomeScreen extends JFrame{
         menuItemPreferencesReport.addActionListener(e -> openPreferencesReportScreen());  
         menuReports.add(menuItemPreferencesReport);  
         
+        // הוספת אפשרויות לתפריט
+        menuOrders.add(menuItemRegularOrder);
+        menuOrders.add(menuItemUrgentOrder);
+        
+        menuBar.add(menuOrders);
         menuBar.add(menuReports);  
+        
+
+	     // חיבור כפתור "Regular Order" לפתיחת מסך הזמנה רגילה
+	     menuItemRegularOrder.addActionListener(e -> openRegularOrderScreen());
+	
+	     // חיבור כפתור "Urgent Order" לפתיחת מסך הזמנה דחופה
+	     //menuItemUrgentOrder.addActionListener(e -> openUrgentOrderScreen());
+
 
         menuBar.setBackground(textColor);
 
@@ -249,6 +265,23 @@ public class HomeScreen extends JFrame{
                 break;
         }
     }
+    
+    private void openRegularOrderScreen() {
+        System.out.println("Opening Regular Order screen...");
+        FrmRegularOrder regularOrderScreen = new FrmRegularOrder();
+        desktopPane.add(regularOrderScreen);
+        regularOrderScreen.moveToFront();
+        regularOrderScreen.setVisible(true);
+    }
+
+    /*private void openUrgentOrderScreen() {
+        System.out.println("Opening Urgent Order screen...");
+        FrmUrgentOrder urgentOrderScreen = new FrmUrgentOrder();
+        desktopPane.add(urgentOrderScreen);
+        urgentOrderScreen.moveToFront();
+        urgentOrderScreen.setVisible(true);
+    }*/
+
 
 
 
