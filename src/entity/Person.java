@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Objects;
 
-public abstract class Person {
+public class Person {
 	private int ID; //PK
 	private String name;
 	private int phoneNumber;

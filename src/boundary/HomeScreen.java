@@ -227,6 +227,29 @@ public class HomeScreen extends JFrame{
     public JDesktopPane getDesktopPane() {
         return desktopPane;
     }
+    
+    
+    public void configureForRole(String role) {
+        // הסתרת הכל כברירת מחדל
+    	menuItemWines.setVisible(false);
+
+        // הצגת מה שרלוונטי לתפקיד
+        switch (role) {
+            case "Marketing":
+            	menuItemWines.setVisible(true);
+                break;
+            case "Sales":
+            	menuItemWines.setVisible(true);
+                break;
+            case "Customer":
+            	menuItemWines.setVisible(true);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Unauthorized role: " + role);
+                break;
+        }
+    }
+
 
 
 

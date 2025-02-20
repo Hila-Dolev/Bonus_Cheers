@@ -10,12 +10,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import control.*;
-import control.*;
 import entity.*;
+import javax.swing.text.*;
+
 
 public class LoginFrame extends JFrame {
 	
@@ -69,56 +69,101 @@ public class LoginFrame extends JFrame {
 	    passwordField.setBounds(150, 110, 200, 20);
 	    contentPane.add(passwordField);
 
-	    JButton btnLogin = new JButton("Login");
-	    btnLogin.setBounds(150, 150, 100, 30);
-	    contentPane.add(btnLogin);
-
-	    // Add action listener for the login button
-	    btnLogin.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-	                handleLogin();
+	 // הוספת מסנן כדי לאפשר רק מספרים
+	    ((AbstractDocument) usernameField.getDocument()).setDocumentFilter(new DocumentFilter() {
+	        @Override
+	        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+	            if (text.matches("\\d*")) { // רק מספרים מותרים
+	                super.replace(fb, offset, length, text, attrs);
 	            }
-				
+	        }
+	    });
+
+	    ((AbstractDocument) passwordField.getDocument()).setDocumentFilter(new DocumentFilter() {
+	        @Override
+	        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+	            if (text.matches("\\d*")) { // רק מספרים מותרים
+	                super.replace(fb, offset, length, text, attrs);
+	            }
+	        }
+	    });
+	    
+	    
+	    JButton btnEmployeeLogin = new JButton("Login as Employee");
+        btnEmployeeLogin.setBounds(50, 160, 150, 30);
+        contentPane.add(btnEmployeeLogin);
+
+        JButton btnCustomerLogin = new JButton("Login as Customer");
+        btnCustomerLogin.setBounds(220, 160, 150, 30);
+        contentPane.add(btnCustomerLogin);
+
+        btnEmployeeLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleLogin(true);
+            }
+        });
+
+        btnCustomerLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleLogin(false);
+            }
         });
     }
 
-	private void handleLogin() {
-		 String username = usernameField.getText();
-	     String password = new String(passwordField.getPassword());
+    private void handleLogin(boolean isEmployee) {
+        String userIdText = usernameField.getText();
+        String passwordText = new String(passwordField.getPassword());
 
-	        if (username.equals("ADMIN") && password.equals("ADMIN")) {
-	        	 HomeScreen homeScreen = new HomeScreen();
-	             homeScreen.configureForRole("Admin");
-	             homeScreen.setVisible(true);
-	             this.dispose();
-	             return;
-	        }
-		
-		try {
-            int userId = Integer.parseInt(username);
-            int passId = Integer.parseInt(password);
+        try {
+            int userId = Integer.parseInt(userIdText);
+            int passwordId = Integer.parseInt(passwordText);
 
-            Employee employee = Main.hospital.getStaffMemberById(userId);
-
-            if (staffMember != null && staffMember.getId() == userId && staffMember.getId() == passId) {
-            	HomeScreen homeScreen = new HomeScreen();
-            	if (staffMember instanceof Doctor) {
-            		homeScreen.configureForRole("Doctor");
-                } else if (staffMember instanceof Nurse) {
-                	homeScreen.configureForRole("Nurse");
+            if (isEmployee) {
+            	Employee employee = PersonManagement.getInstance().getEmployeeDetailsById(userId);
+            	System.out.println(employee.getID());
+                if (employee != null && employee.getID() == passwordId) {
+                    determineEmployeeRole(employee);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Employee ID or password");
                 }
-            	homeScreen.setVisible(true);
-            	this.dispose();
-            
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid ID or password");
+                Customer customer = PersonManagement.getInstance().getCustomerDetailsById(userId);
+                if (customer != null && customer.getID() == passwordId) {
+                    openHomeScreen("Customer");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Customer ID or password");
+                }
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numeric ID and password");
+            JOptionPane.showMessageDialog(this, "Please enter a valid numeric ID and password");
         }
     }
+    private void determineEmployeeRole(Employee employee) {
+        String role = null;
+        
+        switch (employee.getType()) {
+        case SALES -> role = "Sales";
+        case MARKETING -> role = "Marketing";
+        default -> {
+            JOptionPane.showMessageDialog(this, "Unknown role");
+            return;
+        }
+    }
+
+        System.out.println("Role received in LoginFrame: " + role);
+
+        openHomeScreen(role);
+    }
+    
+    private void openHomeScreen(String role) {
+        HomeScreen homeScreen = new HomeScreen();
+        homeScreen.configureForRole(role);
+        homeScreen.setVisible(true);
+        this.dispose();
+    }
+
 
 
 }
