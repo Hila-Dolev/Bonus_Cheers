@@ -4,12 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 import entity.Order;
 import entity.OrderStatus;
+import entity.PriorityLevel;
 import entity.RegularOrder;
 import entity.UrgentOrder;
 
@@ -45,7 +47,10 @@ public class OrderManagement {
         	while (rs.next()) {
                 int orderNumber = rs.getInt("orderNumber");
                 Date orderDate = rs.getDate("orderDate");
-                OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+
+                String statusFromDb = rs.getString("status");
+                OrderStatus status = OrderStatus.valueOf(statusFromDb.replace(" ", "_")); // כאן המרה
+
                 Date shipmentDate = rs.getDate("shipmentDate");
 
                 // בודקים אם ההזמנה היא רגילה או דחופה
@@ -65,6 +70,7 @@ public class OrderManagement {
 
         return ordersList;
     }
+    
     private static RegularOrder getRegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
         String query = "SELECT * FROM TblRegularOrder WHERE orderNumber = ?";
         try (Connection connection = DatabaseConnection.getConnection();
@@ -93,10 +99,10 @@ public class OrderManagement {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                int priorityLevel = rs.getInt("PriorityLevel");
-                int expectedDeliveryTime = rs.getInt("ExpectedDeliveryTime");
+            	 int priorityLevelInt = rs.getInt("PriorityLevel");
+        	    PriorityLevel priorityLevel = PriorityLevel.fromInt(priorityLevelInt);  // המרת int ל-enum
+        	    int expectedDeliveryTime = rs.getInt("ExpectedDeliveryTime");
                 int customerID = rs.getInt("CustomerID");
-                // ניצור את ההזמנה הדחופה
                 return new UrgentOrder(orderNumber, orderDate, status, shipmentDate, priorityLevel, expectedDeliveryTime, customerID);
             }
         } catch (SQLException e) {
@@ -166,7 +172,7 @@ public class OrderManagement {
              PreparedStatement stmt = conn.prepareStatement(insertSql)) {
 
             stmt.setInt(1, urgentOrder.getOrderNumber());
-            stmt.setInt(2, urgentOrder.getPriorityLevel());
+            stmt.setInt(2, urgentOrder.getPriorityLevel().getValue());
             stmt.setInt(3, urgentOrder.getExpectedDeliveryTime());
             stmt.setInt(4, urgentOrder.getCustomerID());
 
@@ -176,4 +182,32 @@ public class OrderManagement {
             throw new SQLException("Error while inserting urgent order: " + e.getMessage());
         }
     }
+
+    public static ArrayList<RegularOrder> getAllRegularOrders() {
+        ArrayList<RegularOrder> regularOrdersList = new ArrayList<>();
+        String query = "SELECT * FROM TblRegularOrder"; // שינוי שם הטבלה אם יש צורך
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int orderNumber = rs.getInt("orderNumber");
+                Date orderDate = rs.getDate("orderDate");
+                OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+                Date shipmentDate = rs.getDate("shipmentDate");
+                int mainCustomerID = rs.getInt("MainCustomerID");
+
+                // יצירת אובייקט RegularOrder והוספה לרשימה
+                RegularOrder regularOrder = new RegularOrder(orderNumber, orderDate, status, shipmentDate, mainCustomerID, new ArrayList<>());
+                regularOrdersList.add(regularOrder);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return regularOrdersList;
+    }
+
+
 }

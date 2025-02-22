@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
  public class FrmOrder extends JInternalFrame {
-     private JTextField txtCustomerID;
-     private JTextField txtCustomerName;
-     private JTextField txtCustomerAddress;
-     private JTextField txtOrderNumber;
-     private JButton btnPreferences;
-     private JPanel wineSelectionPanel;
-     private HashMap<String, JSpinner> wineQuantitySpinners;
+     protected JTextField txtCustomerID;
+     protected JTextField txtCustomerName;
+     protected JTextField txtCustomerAddress;
+     protected JTextField txtOrderNumber;
+     protected JButton btnPreferences;
+     protected JPanel wineSelectionPanel;
+     protected HashMap<String, JSpinner> wineQuantitySpinners;
      
      public FrmOrder() {
          super("Order", true, true, true, true);
@@ -82,6 +82,7 @@ import java.util.HashMap;
          txtOrderNumber.setText(generateOrderNumber());
          add(txtOrderNumber);
          
+        
          wineSelectionPanel = new JPanel();
          wineSelectionPanel.setLayout(new GridLayout(0, 2, 5, 5));
          JScrollPane scrollPane = new JScrollPane(wineSelectionPanel);

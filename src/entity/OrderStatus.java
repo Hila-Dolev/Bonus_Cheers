@@ -3,7 +3,7 @@ package entity;
 public enum OrderStatus {
 	IN_PROCESS,
 	DISPATCHED,
-	DELIVERED,
+	DELIVERS,
 	PAID,
 	SUSPENDED,
 	CANCELED;

@@ -42,7 +42,10 @@ public class RegularOrder extends Order {
 	        customer.getOrders().add(cro);
 	    }
 	 
-	 
+	 @Override
+	    public String toString() {
+	        return "Order Num: " + getOrderNumber();  // מחזירה את המספר בפורמט "Order Num: (number)"
+	    }
 	
 
 }

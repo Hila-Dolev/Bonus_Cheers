@@ -1,10 +1,12 @@
 package entity;
 
 public enum PriorityLevel {
-	ONE(1),
-    TWO(2),
-    THREE(3),
-    FOUR(4);
+	ZERO(0),
+    LOW(1),
+    MEDIUM(2),
+    HIGH(3),
+    URGENT(4),
+    VERY_URGENT(5);
 
     private final int value;
 
@@ -16,6 +18,15 @@ public enum PriorityLevel {
     // מתודה שמחזירה את הערך
     public int getValue() {
         return value;
+    }
+    
+    public static PriorityLevel fromInt(int i) {
+        for (PriorityLevel level : values()) {
+            if (level.getValue() == i) {
+                return level;
+            }
+        }
+        throw new IllegalArgumentException("Invalid priority level: " + i);
     }
 
 }
