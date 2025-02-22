@@ -23,6 +23,8 @@ public class FrmWinesPreferences extends JInternalFrame {
     private JLabel lblSelectedFoods;
     private JLabel lblSelectedOccasions;
     private JLabel lblSelectedWineTypes;
+    private JButton btnUpdatePreferredWines;
+    private FrmOrder orderScreen;
 
     // שמירת הבחירות עבור כל גורם סינון
     private ArrayList<String> selectedWineTypes = new ArrayList<>();
@@ -30,8 +32,21 @@ public class FrmWinesPreferences extends JInternalFrame {
     private ArrayList<String> selectedOccasions = new ArrayList<>();
 
 
+    public FrmWinesPreferences(FrmOrder orderScreen) {
+    	super("Wines Preferences", true, true, true, true);
+    	this.orderScreen = orderScreen;
+    	initializeUI();
+    	
+    }
+    
     public FrmWinesPreferences() {
-        super("Wines Preferences", true, true, true, true);
+    	super("Wines Preferences", true, true, true, true);
+    	this.orderScreen = null;
+    	initializeUI();
+    }
+
+    public void initializeUI () {
+    	
         setLayout(new BorderLayout());
         this.setSize(780, 520); 
         this.setClosable(true); 
@@ -92,15 +107,13 @@ public class FrmWinesPreferences extends JInternalFrame {
             }
         });
         
-        /*// כפתור ייצוא דו"ח
-        btnExportReport = new JButton("Export Report");
-        btnExportReport.addActionListener(new ActionListener() {
+        btnUpdatePreferredWines = new JButton("Update Preferred Wines");
+        btnUpdatePreferredWines.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                exportReport();
+                updatePreferredWinesInOrder();  // פעולה לעדכון היינות
             }
         });
-		*/
         
      // הגדרת הגבלה לכל כפתור עם הוספת רווחים
         gbc.gridx = 0;
@@ -119,17 +132,33 @@ public class FrmWinesPreferences extends JInternalFrame {
         gbc.gridy = 1;
         panelButtons.add(btnShowReport, gbc);
         
-       /* gbc.gridx = 1; 
+        gbc.gridx = 1;
         gbc.gridy = 2;
-        panelButtons.add(btnExportReport, gbc);
-		*/
+        panelButtons.add(btnUpdatePreferredWines, gbc);
         
         // הוספת פאנל הכפתורים למסך
         add(panelButtons, BorderLayout.SOUTH);
         setVisible(true);
 
+    	
     }
-
+    public void updatePreferredWinesInOrder() {
+        ArrayList<Wine> preferredWines = ReportsExport.filterWines(selectedWineTypes, selectedFoods, selectedOccasions);
+        
+        if (preferredWines.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No wines match your preferences!", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+             JOptionPane.showMessageDialog(this, "Preferred wines have been updated in the order!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if (orderScreen != null) {
+            orderScreen.updateWineList(preferredWines); // יש לוודא ש-`orderScreen` כוללת את המתודה `updateWines`
+        }
+        
+        this.dispose();
+        
+    }
+    
     public void openWineTypeSelectionDialog() {
     	LinkedHashSet<String> wineTypeStrings = new LinkedHashSet<>();
         for (WineType wineType : WineTypeManagement.getAllWineTypes()) {
@@ -269,10 +298,12 @@ public class FrmWinesPreferences extends JInternalFrame {
         }
     }
 
-    public void showReport() {
+    public ArrayList<Wine> showReport() {
+    	ArrayList<Wine> filteredWines = new ArrayList<Wine>();
+    	
     	try {
             // קבלת רשימת היינות המסוננים
-            ArrayList<Wine> filteredWines = ReportsExport.filterWines(selectedWineTypes, selectedFoods, selectedOccasions);
+            filteredWines = ReportsExport.filterWines(selectedWineTypes, selectedFoods, selectedOccasions);
 
             if (filteredWines.isEmpty()) {
                 int option = JOptionPane.showConfirmDialog(null, 
@@ -289,7 +320,7 @@ public class FrmWinesPreferences extends JInternalFrame {
                     
                     showReport();
                 }
-                return; // יוצא מהמתודה אם הרשימה ריקה
+                return filteredWines; // יוצא מהמתודה אם הרשימה ריקה
             }
             // יצירת דיאלוג להצגת היינות
             JDialog dialog = new JDialog();
@@ -338,23 +369,20 @@ public class FrmWinesPreferences extends JInternalFrame {
             dialog.setSize(800, 600);
             dialog.setLocationRelativeTo(null); // מרכז למסך
             dialog.setVisible(true);
+            
+           
+            
 
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error displaying report: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    	
+    	 return filteredWines;
+    	
     }
 
-    /*
-    public void exportReport() {
-    	 boolean success = ReportsExport.getInstance().exportReport(ReportsExport.filterWines(selectedWineTypes, selectedFoods, selectedOccasions));
-
-    	    if (success) {
-    	        JOptionPane.showMessageDialog(this, "Report exported successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-    	    } else {
-    	        JOptionPane.showMessageDialog(this, "Failed to export report.", "Error", JOptionPane.ERROR_MESSAGE);
-    	    }
-    }
-  */ 
+    
+    
 }
 
