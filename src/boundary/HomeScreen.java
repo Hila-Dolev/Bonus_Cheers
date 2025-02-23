@@ -31,6 +31,7 @@ public class HomeScreen extends JFrame{
     private JMenuItem menuItemManufacturers = new JMenuItem("Manufacturers");
     private JMenuItem menuItemPreferencesReport = new JMenuItem("Preferences Report"); 
     private JMenuItem menuItemUnproductiveEmployeesReport = new JMenuItem("Unproductive Employees Report");
+    private JMenuItem menuItemWineInventoryReport = new JMenuItem("Wine Inventory Report");
     private JMenu menuOrders = new JMenu("Orders");
     private JMenuItem menuItemRegularOrder = new JMenuItem("Regular Order");
     private JMenuItem menuItemUrgentOrder = new JMenuItem("Urgent Order");
@@ -104,6 +105,9 @@ public class HomeScreen extends JFrame{
         
         menuItemUnproductiveEmployeesReport.addActionListener(e -> openNonProductiveEmployeeReportScreen());
         menuReports.add(menuItemUnproductiveEmployeesReport);
+        
+        menuItemWineInventoryReport.addActionListener(e -> openWineInventoryReportScreen());
+        menuReports.add(menuItemWineInventoryReport);
 
         
         // הוספת אפשרויות לתפריט
@@ -293,6 +297,14 @@ public class HomeScreen extends JFrame{
         desktopPane.add(reportScreen);
         reportScreen.moveToFront();
         reportScreen.setVisible(true);
+    }
+    
+    private void openWineInventoryReportScreen() {
+        System.out.println("Opening Wine Inventory Report screen...");
+        WineInventoryReportScreen inventoryReportScreen = new WineInventoryReportScreen();
+        desktopPane.add(inventoryReportScreen);
+        inventoryReportScreen.moveToFront();
+        inventoryReportScreen.setVisible(true);
     }
 
 
