@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import entity.Employee;
@@ -20,6 +23,8 @@ import entity.WineType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import boundary.WineInventoryReportScreen;
 
 
 public class ReportsExport {
@@ -146,68 +151,92 @@ public class ReportsExport {
 
         return nonProductiveEmployees;
     }
-
+*/
     
         // הפונקציה שתייצא את הדו"ח לקובץ JSON
-    public void exportWineInventoryToFile(ArrayList<StorageLocation> wineStorages) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("wine_inventory_report.txt"))) {
-            // עבור כל מחסן
-            for (StorageLocation storage : wineStorages) {
-                // כותרת למחסן
-                writer.write("פרטי מחסן: " + storage.getStorageLocation() + "\n");
-                writer.write("-------------------------------\n");
+    public void exportWineInventoryToFile(WineInventoryReportScreen winesInventoryScreen) {
+    	// שולף את כל המחסנים
+        HashMap<StorageLocation, HashMap<Integer, Integer>> storageWineQuantities = StorageManagement.getInstance().getWineTypeQuantitiesInEachStorage();
 
-                // פרטי יינות
-                writer.write("פרטי יינות:\n");
-                for (WineInventory inventory : storage.getWineInventory()) {
-                    writer.write("סוג יין: " + inventory.getWineType() + " - כמות: " + inventory.getQuantity() + "\n");
+        // אם אין נתונים למחסנים, תצא מהמתודה
+        if (storageWineQuantities.isEmpty()) {
+            JOptionPane.showMessageDialog(winesInventoryScreen, "No storage data available.");
+            return;
+        }
+
+        // יצירת JSONObject עבור כל הנתונים
+        JSONObject allStoragesJson = new JSONObject();
+        JSONArray storagesArray = new JSONArray();
+
+        // יצירת רשימה של המחסנים כדי למיין אותם לפי locationNumber
+        List<Map.Entry<StorageLocation, HashMap<Integer, Integer>>> sortedStorageEntries = new ArrayList<>(storageWineQuantities.entrySet());
+
+        // מיין את המחסנים לפי locationNumber (סדר עולה)
+        sortedStorageEntries.sort((entry1, entry2) -> Integer.compare(entry1.getKey().getLocationNumber(), entry2.getKey().getLocationNumber()));
+
+        // עבור כל מחסן במערכת, אחרי מיון
+        for (Map.Entry<StorageLocation, HashMap<Integer, Integer>> entry : sortedStorageEntries) {
+            StorageLocation location = entry.getKey();
+            HashMap<Integer, Integer> wineQuantities = entry.getValue();
+
+            // יצירת JSONArray להכיל את כל היינות במחסן
+            JSONArray wineInventoryArray = new JSONArray();
+
+            // עבור כל יין במחסן
+            for (Map.Entry<Integer, Integer> wineEntry : wineQuantities.entrySet()) {
+                int wineTypeID = wineEntry.getKey();
+                int quantity = wineEntry.getValue();
+
+                // חיפוש היין לפי WineTypeID
+                Wine wine = WineManagment.searchWineByCatalogNumber(wineTypeID);
+                if (wine != null) {
+                    // יצירת JSONObject עבור כל יין
+                    JSONObject wineJson = new JSONObject();
+                    JSONObject wineDetailsJson = new JSONObject();
+                    wineDetailsJson.put("wineName", wine.getName());
+                    wineDetailsJson.put("wineTypeID", wine.getWineTypeID());
+                    wineDetailsJson.put("description", wine.getDescription());
+                    wineDetailsJson.put("productionYear", wine.getProductionYear());
+                    wineDetailsJson.put("sweetnessLevel", wine.getSweetnessLevel());
+                    wineDetailsJson.put("productImagePath", wine.getProductImagePath());
+
+                    // הוספת פרטי היין ל־wineJson
+                    wineJson.put("wineDetails", wineDetailsJson);
+                    wineJson.put("quantity", quantity);
+                    
+                    // הוספת מחיר
+                    JSONObject priceJson = new JSONObject();
+                    priceJson.put("pricePerBottle", wine.getPricePerBottle());
+                    wineJson.put("price", priceJson);
+
+                    // הוספת היין ל־JSONArray
+                    wineInventoryArray.put(wineJson);
                 }
-                writer.write("\n");
             }
+
+            // יצירת JSONObject עבור כל מחסן - עכשיו כל פרט המחסן יגיע קודם
+            JSONObject storageJson = new JSONObject();
+            storageJson.put("storageLocation", location.getStorageName());
+            storageJson.put("locationNumber", location.getLocationNumber());
+            storageJson.put("wineInventory", wineInventoryArray);
+
+            // הוספת המחסן ל־JSONArray של כל המחסנים
+            storagesArray.put(storageJson);
+        }
+
+        // הוספת כל המחסנים ל־JSONObject הראשי
+        allStoragesJson.put("storages", storagesArray);
+
+        // יצירת קובץ JSON
+        try (FileWriter file = new FileWriter("wine_inventory_report_all_storages_pretty.json")) {
+            file.write(allStoragesJson.toString(4)); // יצוא ב-indentation של 4
+            JOptionPane.showMessageDialog(winesInventoryScreen, "Export successful!");
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(winesInventoryScreen, "An error occurred during the export.");
             e.printStackTrace();
         }
     }
 
-
-    private JSONObject createStorageJsonObject(StorageLocation storageLocation, HashMap<Integer, Integer> wineQuantities) {
-        JSONObject storageObject = new JSONObject();
-        
-        // הוספת פרטי המחסן
-        storageObject.put("StorageLocation", storageLocation.getLocationNumber() + " - " + storageLocation.getStorageName());
-        
-        // יצירת JSONArray עבור המלאי של כל היינות במחסן
-        JSONArray winesArray = createWinesJsonArray(wineQuantities);
-
-        // הוספת המלאי של היינות למחסן
-        storageObject.put("WineInventory", winesArray);
-
-        return storageObject;
-    }
-
-    private JSONArray createWinesJsonArray(HashMap<Integer, Integer> wineQuantities) {
-        JSONArray winesArray = new JSONArray();
-        
-        // חזור על כל היינות וייצא את המידע שלהם
-        for (HashMap.Entry<Integer, Integer> wineEntry : wineQuantities.entrySet()) {
-            int wineTypeID = wineEntry.getKey();
-            int quantity = wineEntry.getValue();
-
-            // קבלת שם היין לפי WineTypeID
-            Wine wine = WineManagment.searchWineByCatalogNumber(wineTypeID);
-            String wineName = (wine != null) ? wine.getName() : "Unknown Wine";
-
-            // יצירת אובייקט JSON עבור כל יין
-            JSONObject wineObject = new JSONObject();
-            wineObject.put("WineType", wineName);
-            wineObject.put("Quantity", quantity);
-
-            winesArray.put(wineObject);
-        }
-        
-        return winesArray;
-    }
-*/
  
 }
 
