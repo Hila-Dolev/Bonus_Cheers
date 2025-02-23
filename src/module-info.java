@@ -9,4 +9,5 @@ module Bonus_Cherrs_java {
 	requires jcalendar;
 	requires java.xml;
 	requires java.sql;
+	requires org.json;
 }

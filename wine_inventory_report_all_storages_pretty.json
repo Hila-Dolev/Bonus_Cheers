@@ -1,0 +1,775 @@
+{"storages": [
+    {
+        "wineInventory": [
+            {
+                "quantity": 1,
+                "price": {"pricePerBottle": 55},
+                "wineDetails": {
+                    "productImagePath": "/images/vin_santo.jpg",
+                    "sweetnessLevel": "SWEET",
+                    "wineName": "Vin Santo",
+                    "description": "A sweet dessert wine from Tuscany.",
+                    "productionYear": "2019-07-09",
+                    "wineTypeID": 112
+                }
+            },
+            {
+                "quantity": 1,
+                "price": {"pricePerBottle": 46},
+                "wineDetails": {
+                    "productImagePath": "/images/red_wine_1.jpg",
+                    "sweetnessLevel": "DRY",
+                    "wineName": "Red Wine",
+                    "description": "A bold and fruity red wine.",
+                    "productionYear": "2018-07-10",
+                    "wineTypeID": 1
+                }
+            },
+            {
+                "quantity": 2,
+                "price": {"pricePerBottle": 36},
+                "wineDetails": {
+                    "productImagePath": "/images/albarino.jpg",
+                    "sweetnessLevel": "SEMI_DRY",
+                    "wineName": "Albariño",
+                    "description": "A bright and aromatic white wine.",
+                    "productionYear": "2022-07-12",
+                    "wineTypeID": 12
+                }
+            }
+        ],
+        "storageLocation": "Warehouse A",
+        "locationNumber": 1
+    },
+    {
+        "wineInventory": [
+            {
+                "quantity": 4,
+                "price": {"pricePerBottle": 60},
+                "wineDetails": {
+                    "productImagePath": "/images/port.jpg",
+                    "sweetnessLevel": "SWEET",
+                    "wineName": "Port",
+                    "description": "A rich and sweet dessert wine.",
+                    "productionYear": "2022-07-09",
+                    "wineTypeID": 11
+                }
+            },
+            {
+                "quantity": 1,
+                "price": {"pricePerBottle": 75},
+                "wineDetails": {
+                    "productImagePath": "/images/champagne.jpg",
+                    "sweetnessLevel": "DRY",
+                    "wineName": "Champagne",
+                    "description": "A luxurious and effervescent wine.",
+                    "productionYear": "2021-07-11",
+                    "wineTypeID": 4
+                }
+            },
+            {
+                "quantity": 1,
+                "price": {"pricePerBottle": 70},
+                "wineDetails": {
+                    "productImagePath": "/images/barolo.jpg",
+                    "sweetnessLevel": "DRY",
+                    "wineName": "Barolo",
+                    "description": "A bold and tannic red wine.",
+                    "productionYear": "2018-07-10",
+                    "wineTypeID": 9
+                }
+            },
+            {
+                "quantity": 1,
+                "price": {"pricePerBottle": 56},
+                "wineDetails": {
+                    "productImagePath": "/images/zinfandel.jpg",
+                    "sweetnessLevel": "DRY",
+                    "wineName": "Zinfandel",
+                    "description": "A robust and spicy red wine.",
+                    "productionYear": "2018-07-11",
+                    "wineTypeID": 2
+                }
+            }
+        ],
+        "storageLocation": "Warehouse B",
+        "locationNumber": 2
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 42},
+            "wineDetails": {
+                "productImagePath": "/images/sangiovese.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Sangiovese",
+                "description": "An earthy and dry red wine.",
+                "productionYear": "2018-07-10",
+                "wineTypeID": 3
+            }
+        }],
+        "storageLocation": "Cold Storage",
+        "locationNumber": 3
+    },
+    {
+        "wineInventory": [{
+            "quantity": 16,
+            "price": {"pricePerBottle": 36},
+            "wineDetails": {
+                "productImagePath": "/images/cava.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Cava",
+                "description": "A sparkling Spanish wine.",
+                "productionYear": "2019-07-12",
+                "wineTypeID": 4
+            }
+        }],
+        "storageLocation": "Storage Room 1",
+        "locationNumber": 4
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 29},
+            "wineDetails": {
+                "productImagePath": "/images/torrontes.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Torrontés",
+                "description": "A fragrant and fruity Argentinian wine.",
+                "productionYear": "2018-07-12",
+                "wineTypeID": 1114
+            }
+        }],
+        "storageLocation": "Storage Room 2",
+        "locationNumber": 5
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 38},
+            "wineDetails": {
+                "productImagePath": "/images/valpolicella.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Valpolicella",
+                "description": "A light and fruity Italian red wine.",
+                "productionYear": "2019-07-11",
+                "wineTypeID": 8
+            }
+        }],
+        "storageLocation": "Shipping Dock",
+        "locationNumber": 6
+    },
+    {
+        "wineInventory": [{
+            "quantity": 6,
+            "price": {"pricePerBottle": 31},
+            "wineDetails": {
+                "productImagePath": "/images/white_wine_2.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "White Wine",
+                "description": "A crisp and refreshing white wine.",
+                "productionYear": "2018-07-12",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Loading Bay",
+        "locationNumber": 7
+    },
+    {
+        "wineInventory": [{
+            "quantity": 4,
+            "price": {"pricePerBottle": 48},
+            "wineDetails": {
+                "productImagePath": "/images/cabernet.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Cabernet",
+                "description": "A rich and intense red wine.",
+                "productionYear": "2018-07-10",
+                "wineTypeID": 2
+            }
+        }],
+        "storageLocation": "Freezer A",
+        "locationNumber": 8
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 37},
+            "wineDetails": {
+                "productImagePath": "/images/viognier.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Viognier",
+                "description": "A fruity and lush white wine.",
+                "productionYear": "2019-07-12",
+                "wineTypeID": 1113
+            }
+        }],
+        "storageLocation": "Freezer B",
+        "locationNumber": 9
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 38},
+            "wineDetails": {
+                "productImagePath": "/images/chianti.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Chianti",
+                "description": "A dry and medium-bodied red wine.",
+                "productionYear": "2019-07-11",
+                "wineTypeID": 4
+            }
+        }],
+        "storageLocation": "Archive Room",
+        "locationNumber": 10
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 42},
+            "wineDetails": {
+                "productImagePath": "/images/barbera.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Barbera",
+                "description": "A lively and acidic Italian red wine.",
+                "productionYear": "2019-07-11",
+                "wineTypeID": 5
+            }
+        }],
+        "storageLocation": "Bulk Storage",
+        "locationNumber": 11
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 25},
+            "wineDetails": {
+                "productImagePath": "/images/rose_wine_3.jpg",
+                "sweetnessLevel": "SWEET",
+                "wineName": "Rosé Wine",
+                "description": "A light and floral rosé wine.",
+                "productionYear": "2021-07-13",
+                "wineTypeID": 111
+            }
+        }],
+        "storageLocation": "Fragile Storage",
+        "locationNumber": 13
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 28},
+            "wineDetails": {
+                "productImagePath": "/images/moscato.jpg",
+                "sweetnessLevel": "SWEET",
+                "wineName": "Moscato",
+                "description": "A light and sweet wine.",
+                "productionYear": "2021-07-09",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Shelf A",
+        "locationNumber": 14
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 28},
+            "wineDetails": {
+                "productImagePath": "/images/lambrusco.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Lambrusco",
+                "description": "A fizzy and fruity red wine.",
+                "productionYear": "2022-07-13",
+                "wineTypeID": 1111
+            }
+        }],
+        "storageLocation": "Temporary Storage",
+        "locationNumber": 16
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 30},
+            "wineDetails": {
+                "productImagePath": "/images/soave.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Soave",
+                "description": "A delicate and floral white wine.",
+                "productionYear": "2021-07-13",
+                "wineTypeID": 18
+            }
+        }],
+        "storageLocation": "Office Storage",
+        "locationNumber": 17
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 49},
+            "wineDetails": {
+                "productImagePath": "/images/tannat.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Tannat",
+                "description": "A robust and tannic red wine.",
+                "productionYear": "2021-07-10",
+                "wineTypeID": 1
+            }
+        }],
+        "storageLocation": "Secure Storage",
+        "locationNumber": 18
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 60},
+            "wineDetails": {
+                "productImagePath": "/images/sparkling.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Sparkling",
+                "description": "A bubbly sparkling wine.",
+                "productionYear": "2019-07-11",
+                "wineTypeID": 6
+            }
+        }],
+        "storageLocation": "High-Risk Area",
+        "locationNumber": 19
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 33},
+            "wineDetails": {
+                "productImagePath": "/images/sauvignon.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Sauvignon",
+                "description": "A grassy and herbal white wine.",
+                "productionYear": "2018-07-12",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Low-Risk Area",
+        "locationNumber": 20
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 31},
+            "wineDetails": {
+                "productImagePath": "/images/gruner.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Grüner Veltliner",
+                "description": "A zesty and spicy white wine.",
+                "productionYear": "2022-07-12",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Maintenance Room",
+        "locationNumber": 22
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 22},
+            "wineDetails": {
+                "productImagePath": "/images/vinho_verde.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Vinho Verde",
+                "description": "A light and slightly effervescent wine.",
+                "productionYear": "2019-07-13",
+                "wineTypeID": 13
+            }
+        }],
+        "storageLocation": "Laboratory Storage",
+        "locationNumber": 23
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 40},
+            "wineDetails": {
+                "productImagePath": "/images/roussanne.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Roussanne",
+                "description": "A creamy and rich white wine.",
+                "productionYear": "2021-07-12",
+                "wineTypeID": 1112
+            }
+        }],
+        "storageLocation": "Production Area",
+        "locationNumber": 24
+    },
+    {
+        "wineInventory": [{
+            "quantity": 8,
+            "price": {"pricePerBottle": 50},
+            "wineDetails": {
+                "productImagePath": "/images/dessert.jpg",
+                "sweetnessLevel": "SWEET",
+                "wineName": "Dessert Wine",
+                "description": "A sweet dessert wine.",
+                "productionYear": "2022-07-09",
+                "wineTypeID": 111
+            }
+        }],
+        "storageLocation": "Packing Room",
+        "locationNumber": 25
+    },
+    {
+        "wineInventory": [{
+            "quantity": 3,
+            "price": {"pricePerBottle": 46},
+            "wineDetails": {
+                "productImagePath": "/images/shiraz.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Shiraz",
+                "description": "A spicy and bold red wine.",
+                "productionYear": "2022-07-11",
+                "wineTypeID": 3
+            }
+        }],
+        "storageLocation": "Retail Storage",
+        "locationNumber": 26
+    },
+    {
+        "wineInventory": [],
+        "storageLocation": "Stockroom",
+        "locationNumber": 27
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 45},
+            "wineDetails": {
+                "productImagePath": "/images/rioja.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Rioja",
+                "description": "A rich and earthy Spanish red wine.",
+                "productionYear": "1905-07-10",
+                "wineTypeID": 5
+            }
+        }],
+        "storageLocation": "Document Storage",
+        "locationNumber": 28
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 40},
+            "wineDetails": {
+                "productImagePath": "/images/marsanne.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Marsanne",
+                "description": "A soft and aromatic white wine.",
+                "productionYear": "2018-07-12",
+                "wineTypeID": 1112
+            }
+        }],
+        "storageLocation": "Temporary Space",
+        "locationNumber": 30
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 43},
+            "wineDetails": {
+                "productImagePath": "/images/merlot.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Merlot",
+                "description": "A smooth and velvety red wine.",
+                "productionYear": "2024-07-07",
+                "wineTypeID": 2
+            }
+        }],
+        "storageLocation": "Cold Room",
+        "locationNumber": 31
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 38},
+            "wineDetails": {
+                "productImagePath": "/images/prosecco.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Prosecco",
+                "description": "A light and bubbly wine.",
+                "productionYear": "2021-07-13",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Receiving Area",
+        "locationNumber": 32
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 40},
+            "wineDetails": {
+                "productImagePath": "/images/grenache.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Grenache",
+                "description": "A bright and fruity red wine.",
+                "productionYear": "2024-07-11",
+                "wineTypeID": 4
+            }
+        }],
+        "storageLocation": "Inventory Storage",
+        "locationNumber": 33
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 47},
+            "wineDetails": {
+                "productImagePath": "/images/syrah.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Syrah",
+                "description": "A bold and peppery red wine.",
+                "productionYear": "2018-07-11",
+                "wineTypeID": 5
+            }
+        }],
+        "storageLocation": "Outdoor Storage",
+        "locationNumber": 34
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 39},
+            "wineDetails": {
+                "productImagePath": "/images/nero_davola.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Nero d\u2019Avola",
+                "description": "A bold and spicy Sicilian red wine.",
+                "productionYear": "2024-07-10",
+                "wineTypeID": 5
+            }
+        }],
+        "storageLocation": "Reserved Storage",
+        "locationNumber": 35
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 33},
+            "wineDetails": {
+                "productImagePath": "/images/chardonnay.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Chardonnay",
+                "description": "A creamy white wine.",
+                "productionYear": "2024-07-14",
+                "wineTypeID": 1111
+            }
+        }],
+        "storageLocation": "Storage Hub",
+        "locationNumber": 36
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 44},
+            "wineDetails": {
+                "productImagePath": "/images/tempranillo.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Tempranillo",
+                "description": "A soft and fruity red wine.",
+                "productionYear": "2018-07-10",
+                "wineTypeID": 3
+            }
+        }],
+        "storageLocation": "Emergency Storage",
+        "locationNumber": 37
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 34},
+            "wineDetails": {
+                "productImagePath": "/images/vermentino.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Vermentino",
+                "description": "A crisp and citrusy white wine.",
+                "productionYear": "2023-07-13",
+                "wineTypeID": 11
+            }
+        }],
+        "storageLocation": "Finished Goods",
+        "locationNumber": 39
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 39},
+            "wineDetails": {
+                "productImagePath": "/images/fiano.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Fiano",
+                "description": "A lush and tropical Italian white wine.",
+                "productionYear": "2023-07-12",
+                "wineTypeID": 1112
+            }
+        }],
+        "storageLocation": "Raw Material Storage",
+        "locationNumber": 40
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 50},
+            "wineDetails": {
+                "productImagePath": "/images/pinot_noir.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Pinot Noir",
+                "description": "A delicate and aromatic red wine.",
+                "productionYear": "2023-07-13",
+                "wineTypeID": 2
+            }
+        }],
+        "storageLocation": "Warehouse C",
+        "locationNumber": 41
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 37},
+            "wineDetails": {
+                "productImagePath": "/images/gewurz.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Gewürztraminer",
+                "description": "A floral and aromatic white wine.",
+                "productionYear": "2023-07-12",
+                "wineTypeID": 1111
+            }
+        }],
+        "storageLocation": "Secure Vault",
+        "locationNumber": 42
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 86},
+            "wineDetails": {
+                "productImagePath": "/images/amarone.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Amarone",
+                "description": "A rich and complex red wine.",
+                "productionYear": "2022-07-09",
+                "wineTypeID": 4
+            }
+        }],
+        "storageLocation": "Export Area",
+        "locationNumber": 43
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 34},
+            "wineDetails": {
+                "productImagePath": "/images/grenache_blanc.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Grenache Blanc",
+                "description": "A soft and lush white wine.",
+                "productionYear": "2023-07-12",
+                "wineTypeID": 1111
+            }
+        }],
+        "storageLocation": "Import Storage",
+        "locationNumber": 44
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 32},
+            "wineDetails": {
+                "productImagePath": "/images/tempranillo_blanco.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Tempranillo Blanco",
+                "description": "A crisp white wine from Spain.",
+                "productionYear": "1905-07-13",
+                "wineTypeID": 12
+            }
+        }],
+        "storageLocation": "Overflow Room",
+        "locationNumber": 45
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 40},
+            "wineDetails": {
+                "productImagePath": "/images/riesling.jpg",
+                "sweetnessLevel": "SEMI_SWEET",
+                "wineName": "Riesling",
+                "description": "A fruity and floral white wine.",
+                "productionYear": "2023-07-12",
+                "wineTypeID": 1111
+            }
+        }],
+        "storageLocation": "Central Storage",
+        "locationNumber": 46
+    },
+    {
+        "wineInventory": [{
+            "quantity": 1,
+            "price": {"pricePerBottle": 48},
+            "wineDetails": {
+                "productImagePath": "/images/malbec.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Malbec",
+                "description": "A dark and velvety red wine.",
+                "productionYear": "2023-07-11",
+                "wineTypeID": 3
+            }
+        }],
+        "storageLocation": "Packing Zone",
+        "locationNumber": 47
+    },
+    {
+        "wineInventory": [{
+            "quantity": 5,
+            "price": {"pricePerBottle": 30},
+            "wineDetails": {
+                "productImagePath": "/images/pinot_grigio.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Pinot Grigio",
+                "description": "A crisp and light white wine.",
+                "productionYear": "2024-07-13",
+                "wineTypeID": 14
+            }
+        }],
+        "storageLocation": "Overflow Storage",
+        "locationNumber": 48
+    },
+    {
+        "wineInventory": [{
+            "quantity": 2,
+            "price": {"pricePerBottle": 68},
+            "wineDetails": {
+                "productImagePath": "/images/nebbiolo.jpg",
+                "sweetnessLevel": "DRY",
+                "wineName": "Nebbiolo",
+                "description": "A structured and tannic red wine.",
+                "productionYear": "2024-07-09",
+                "wineTypeID": 7
+            }
+        }],
+        "storageLocation": "Seasonal Storage",
+        "locationNumber": 49
+    },
+    {
+        "wineInventory": [{
+            "quantity": 6,
+            "price": {"pricePerBottle": 35},
+            "wineDetails": {
+                "productImagePath": "/images/pecorino.jpg",
+                "sweetnessLevel": "SEMI_DRY",
+                "wineName": "Pecorino",
+                "description": "A rich and citrusy Italian white wine.",
+                "productionYear": "2022-07-12",
+                "wineTypeID": 12
+            }
+        }],
+        "storageLocation": "Fragile Goods",
+        "locationNumber": 50
+    }
+]}

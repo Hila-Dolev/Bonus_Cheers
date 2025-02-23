@@ -1,17 +1,25 @@
 package control;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import javax.swing.table.DefaultTableModel;
+
 import entity.Employee;
 import entity.Food;
+import entity.StorageLocation;
 import entity.Wine;
 import entity.WineType;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class ReportsExport {
@@ -120,7 +128,7 @@ public class ReportsExport {
     }
 
 */
-	
+	/*
 	 // מתודה להחזרת עובדים לא פרודוקטיביים לפי תאריך
     public ArrayList<Employee> getNonProductiveEmployees(Date startDate, Date endDate) {
         ArrayList<Employee> allEmployees = PersonManagement.getInstance().getAllEmployees(); // השתמשנו ב- PersonManagement
@@ -139,7 +147,68 @@ public class ReportsExport {
         return nonProductiveEmployees;
     }
 
-   
+    
+        // הפונקציה שתייצא את הדו"ח לקובץ JSON
+    public void exportWineInventoryToFile(ArrayList<StorageLocation> wineStorages) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("wine_inventory_report.txt"))) {
+            // עבור כל מחסן
+            for (StorageLocation storage : wineStorages) {
+                // כותרת למחסן
+                writer.write("פרטי מחסן: " + storage.getStorageLocation() + "\n");
+                writer.write("-------------------------------\n");
+
+                // פרטי יינות
+                writer.write("פרטי יינות:\n");
+                for (WineInventory inventory : storage.getWineInventory()) {
+                    writer.write("סוג יין: " + inventory.getWineType() + " - כמות: " + inventory.getQuantity() + "\n");
+                }
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private JSONObject createStorageJsonObject(StorageLocation storageLocation, HashMap<Integer, Integer> wineQuantities) {
+        JSONObject storageObject = new JSONObject();
+        
+        // הוספת פרטי המחסן
+        storageObject.put("StorageLocation", storageLocation.getLocationNumber() + " - " + storageLocation.getStorageName());
+        
+        // יצירת JSONArray עבור המלאי של כל היינות במחסן
+        JSONArray winesArray = createWinesJsonArray(wineQuantities);
+
+        // הוספת המלאי של היינות למחסן
+        storageObject.put("WineInventory", winesArray);
+
+        return storageObject;
+    }
+
+    private JSONArray createWinesJsonArray(HashMap<Integer, Integer> wineQuantities) {
+        JSONArray winesArray = new JSONArray();
+        
+        // חזור על כל היינות וייצא את המידע שלהם
+        for (HashMap.Entry<Integer, Integer> wineEntry : wineQuantities.entrySet()) {
+            int wineTypeID = wineEntry.getKey();
+            int quantity = wineEntry.getValue();
+
+            // קבלת שם היין לפי WineTypeID
+            Wine wine = WineManagment.searchWineByCatalogNumber(wineTypeID);
+            String wineName = (wine != null) ? wine.getName() : "Unknown Wine";
+
+            // יצירת אובייקט JSON עבור כל יין
+            JSONObject wineObject = new JSONObject();
+            wineObject.put("WineType", wineName);
+            wineObject.put("Quantity", quantity);
+
+            winesArray.put(wineObject);
+        }
+        
+        return winesArray;
+    }
+*/
+ 
 }
 
 
