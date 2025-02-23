@@ -29,12 +29,12 @@ public class HomeScreen extends JFrame{
 	private JMenuItem menuItemImport = new JMenuItem("Import Data");
     private JMenuItem menuItemWines = new JMenuItem("Wines");
     private JMenuItem menuItemManufacturers = new JMenuItem("Manufacturers");
-    private JMenuItem menuItemPreferencesReport = new JMenuItem("Preferences Report"); 
-    private JMenuItem menuItemUnproductiveEmployeesReport = new JMenuItem("Unproductive Employees Report");
-    private JMenuItem menuItemWineInventoryReport = new JMenuItem("Wine Inventory Report");
+    private JMenuItem menuItemPreferencesReport = new JMenuItem(" - Preferences Report"); 
+    private JMenuItem menuItemUnproductiveEmployeesReport = new JMenuItem(" - Unproductive Employees Report");
+    private JMenuItem menuItemWineInventoryReport = new JMenuItem(" - Wine Inventory Report");
     private JMenu menuOrders = new JMenu("Orders");
-    private JMenuItem menuItemRegularOrder = new JMenuItem("Regular Order");
-    private JMenuItem menuItemUrgentOrder = new JMenuItem("Urgent Order");
+    private JMenuItem menuItemRegularOrder = new JMenuItem(" - Regular Order");
+    private JMenuItem menuItemUrgentOrder = new JMenuItem(" - Urgent Order");
     private JMenu menuReports = new JMenu("Reports");
     private JLabel logoLabel = new JLabel();
     private JDesktopPane desktopPane = new JDesktopPane(); 
@@ -143,10 +143,26 @@ public class HomeScreen extends JFrame{
         menuReports.setBackground(buttonColor);
         menuReports.setForeground(buttonColor);
         menuReports.setBorder(buttonBorder);
+        
+        menuOrders.setBackground(buttonColor);
+        menuOrders.setForeground(buttonColor);
+        menuOrders.setBorder(buttonBorder);
             
         menuItemPreferencesReport.setBackground(textColor);
         menuItemPreferencesReport.setForeground(buttonColor);
 
+        menuItemUnproductiveEmployeesReport.setBackground(textColor);
+        menuItemUnproductiveEmployeesReport.setForeground(buttonColor);
+        
+        menuItemWineInventoryReport.setBackground(textColor);
+        menuItemWineInventoryReport.setForeground(buttonColor);
+        
+        menuItemRegularOrder.setBackground(textColor);
+        menuItemRegularOrder.setForeground(buttonColor);
+        
+        menuItemUrgentOrder.setBackground(textColor);
+        menuItemUrgentOrder.setForeground(buttonColor);
+        
         menuBar.setPreferredSize(new Dimension(400, 40));
         
         this.setJMenuBar(menuBar);

@@ -133,7 +133,7 @@ public class ReportsExport {
     }
 
 */
-	/*
+	
 	 // מתודה להחזרת עובדים לא פרודוקטיביים לפי תאריך
     public ArrayList<Employee> getNonProductiveEmployees(Date startDate, Date endDate) {
         ArrayList<Employee> allEmployees = PersonManagement.getInstance().getAllEmployees(); // השתמשנו ב- PersonManagement
@@ -151,7 +151,7 @@ public class ReportsExport {
 
         return nonProductiveEmployees;
     }
-*/
+
     
         // הפונקציה שתייצא את הדו"ח לקובץ JSON
     public void exportWineInventoryToFile(WineInventoryReportScreen winesInventoryScreen) {
@@ -228,7 +228,7 @@ public class ReportsExport {
         allStoragesJson.put("storages", storagesArray);
 
         // יצירת קובץ JSON
-        try (FileWriter file = new FileWriter("wine_inventory_report_all_storages_pretty.json")) {
+        try (FileWriter file = new FileWriter("wine_inventory_report.json")) {
             file.write(allStoragesJson.toString(4)); // יצוא ב-indentation של 4
             JOptionPane.showMessageDialog(winesInventoryScreen, "Export successful!");
         } catch (IOException e) {

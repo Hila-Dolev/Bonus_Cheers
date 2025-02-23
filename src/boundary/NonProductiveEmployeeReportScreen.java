@@ -11,8 +11,13 @@ import entity.Employee;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import java.beans.PropertyChangeListener;
+
+
 
 public class NonProductiveEmployeeReportScreen extends JInternalFrame {
 
@@ -66,6 +71,32 @@ public class NonProductiveEmployeeReportScreen extends JInternalFrame {
         JCalendar calendarEnd = endDateChooser.getJCalendar();
         calendarEnd.getDayChooser().setForeground(Color.WHITE);  // צבע טקסט של הימים
        
+     // הגדרת Listener לתאריך התחלה
+        startDateChooser.getDateEditor().getUiComponent().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date startDate = startDateChooser.getDate();
+                if (startDate != null) {
+                    // הגדרת התאריך הסופי המינימלי
+                    endDateChooser.setMinSelectableDate(startDate);
+                }
+            }
+        });
+
+        // הגדרת Listener לתאריך סיום
+        endDateChooser.getDateEditor().getUiComponent().addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                Date endDate = endDateChooser.getDate();
+                Date startDate = startDateChooser.getDate();
+                if (startDate != null && endDate != null && endDate.before(startDate)) {
+                    // אם התאריך סיום לפני התחלה, מחזירים את התאריך הסיום לתאריך התחלה
+                    endDateChooser.setDate(startDate);
+                }
+            }
+        });
+
+        
         
         generateReportButton = new JButton("Generate Report");
 

@@ -25,6 +25,7 @@ public class WineInventoryReportScreen extends JInternalFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private JComboBox<StorageLocation> storageComboBox;
+    private Color burgundyColor;
 
     public WineInventoryReportScreen() {
         setTitle("Wine Inventory Report");
@@ -35,6 +36,22 @@ public class WineInventoryReportScreen extends JInternalFrame {
         setMaximizable(true);
         setResizable(true);
 
+        //Design
+        Color buttonBackgroundColor = Color.decode("#6f2936");
+        Color buttonTextColor = Color.WHITE; 
+        Color fieldBackgroundColor = Color.WHITE; 
+
+        UIManager.put("Button.background", buttonBackgroundColor);
+        UIManager.put("Button.foreground", buttonTextColor);
+        UIManager.put("TextField.background", fieldBackgroundColor);
+        UIManager.put("ComboBox.background", fieldBackgroundColor);
+        UIManager.put("ComboBox.foreground", Color.decode("#252525")); // תוכל להוסיף גם צבע טקסט אם תרצה
+		UIManager.put("ComboBox.selectionBackground", Color.decode("#6f2936"));
+		UIManager.put("ComboBox.selectionForeground", Color.WHITE);
+		
+		burgundyColor = Color.decode("#e4d1c3");
+        
+        
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
@@ -89,6 +106,7 @@ private void loadStorageComboBox() {
     tableModel = new DefaultTableModel(columns, 0);
     table = new JTable(tableModel);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    table.getTableHeader().setBackground(burgundyColor);
     table.setFillsViewportHeight(true);
 
     JScrollPane tableScrollPane = new JScrollPane(table);
