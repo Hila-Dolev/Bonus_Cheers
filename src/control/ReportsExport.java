@@ -3,9 +3,11 @@ package control;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 
+import entity.Employee;
 import entity.Food;
 import entity.Wine;
 import entity.WineType;
@@ -118,6 +120,26 @@ public class ReportsExport {
     }
 
 */
+	
+	 // מתודה להחזרת עובדים לא פרודוקטיביים לפי תאריך
+    public ArrayList<Employee> getNonProductiveEmployees(Date startDate, Date endDate) {
+        ArrayList<Employee> allEmployees = PersonManagement.getInstance().getAllEmployees(); // השתמשנו ב- PersonManagement
+        ArrayList<Employee> nonProductiveEmployees = new ArrayList<>();
+
+        for (Employee employee : allEmployees) {
+            int urgentOrders = PersonManagement.getInstance().countUrgentOrders(employee, startDate, endDate);
+            int regularOrders = PersonManagement.getInstance().countRegularOrders(employee, startDate, endDate);
+
+            // אם העובד עשה פחות מ-2 הזמנות דחופות או פחות מ-4 הזמנות רגילות
+            if (urgentOrders < 2 || regularOrders < 4) {
+                nonProductiveEmployees.add(employee);
+            }
+        }
+
+        return nonProductiveEmployees;
+    }
+
+   
 }
 
 

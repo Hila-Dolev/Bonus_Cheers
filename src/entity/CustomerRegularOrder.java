@@ -12,7 +12,7 @@ public class CustomerRegularOrder {
 		super();
 		this.customer = customer;
 		this.order = order;
-		this.wineQuantities = wineQuantities;
+		this.wineQuantities = new HashMap<Wine, Integer>();
 	}
 
 	public CustomerRegularOrder() {
@@ -46,15 +46,22 @@ public class CustomerRegularOrder {
 	  
 	
 	public void addWine(Wine wine, int quantity) {
-        wineQuantities.put(wine, wineQuantities.getOrDefault(wine, 0) + quantity);
+		 if (wineQuantities == null) {
+		        wineQuantities = new HashMap<>();
+		    }
+		    wineQuantities.put(wine, wineQuantities.getOrDefault(wine, 0) + quantity);
     }
 	
 	public void printOrderDetails() {
-        System.out.println("Customer: " + customer.getName() + ", Address: " + customer.getDeliveryAddress());
-        System.out.println("Order ID: " + order.getOrderNumber());
-        for (HashMap.Entry<Wine, Integer> entry : wineQuantities.entrySet()) {
-            System.out.println("  - " + entry.getKey().getName() + ": " + entry.getValue() + " bottles");
-        }
+		System.out.println("Customer: " + customer.getName() + ", Address: " + customer.getDeliveryAddress());
+	    System.out.println("Order ID: " + order.getOrderNumber());
+	    if (wineQuantities != null && !wineQuantities.isEmpty()) {
+	        for (HashMap.Entry<Wine, Integer> entry : wineQuantities.entrySet()) {
+	            System.out.println("  - " + entry.getKey().getName() + ": " + entry.getValue() + " bottles");
+	        }
+	    } else {
+	        System.out.println("  No wines in this order.");
+	    }
 	}
 	  
 	  

@@ -4,10 +4,11 @@ import java.util.Date;
 import java.util.Objects;
 
 public abstract class Order {
-	private int orderNumber; //PK
-	private Date orderDate;
-	private OrderStatus status;
-	private Date shipmentDate;
+	protected int orderNumber; //PK
+	protected Date orderDate;
+	protected OrderStatus status;
+	protected Date shipmentDate;
+	protected int AssignedSaleEmployeeID;
 	
 	//Constructors
 	public Order(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
@@ -17,6 +18,16 @@ public abstract class Order {
 		this.status = status;
 		this.shipmentDate = shipmentDate;
 	}
+	
+	public Order(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int assignedSaleEmployeeID) {
+		super();
+		this.orderNumber = orderNumber;
+		this.orderDate = orderDate;
+		this.status = status;
+		this.shipmentDate = shipmentDate;
+		AssignedSaleEmployeeID = assignedSaleEmployeeID;
+	}
+
 	public Order() {
 		super();
 	}
@@ -47,6 +58,16 @@ public abstract class Order {
 		this.shipmentDate = shipmentDate;
 	}
 	
+	
+	
+	public int getAssignedSaleEmployeeID() {
+		return AssignedSaleEmployeeID;
+	}
+
+	public void setAssignedSaleEmployeeID(int assignedSaleEmployeeID) {
+		AssignedSaleEmployeeID = assignedSaleEmployeeID;
+	}
+
 	//hashCode & equals
 	@Override
 	public int hashCode() {

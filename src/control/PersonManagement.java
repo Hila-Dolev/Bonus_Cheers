@@ -163,4 +163,173 @@ public class PersonManagement {
         }
         return "Error"; // במקרה של תקלה
     }
+    
+    public ArrayList<Employee> getAllEmployees() {
+        String employeeQuery = "SELECT ID, Name, PhoneNumber, Email, officeAddress, employmentStartDate, type FROM TblEmployee JOIN TblPerson ON TblEmployee.ID = TblPerson.ID";
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement employeeStmt = connection.prepareStatement(employeeQuery);
+             ResultSet employeeRs = employeeStmt.executeQuery()) {
+
+            while (employeeRs.next()) {
+                int id = employeeRs.getInt("ID");
+                String name = employeeRs.getString("Name");
+                int phoneNumber = employeeRs.getInt("PhoneNumber");
+                String email = employeeRs.getString("Email");
+                String officeAddress = employeeRs.getString("officeAddress");
+                Date employmentStartDate = employeeRs.getDate("employmentStartDate");
+                String typeStr = employeeRs.getString("type");
+                EmployeeType type = null;
+
+                if (typeStr != null) {
+                    try {
+                        type = EmployeeType.valueOf(typeStr.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Unknown employee type: " + typeStr);
+                    }
+                }
+
+                Employee employee = new Employee(id, name, phoneNumber, email, employmentStartDate, officeAddress, type);
+                employees.add(employee);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees; // מחזירים את רשימת העובדים
+    }
+
+
+    
+    public ArrayList<Employee> getMarketingEmployees() {
+        String employeeQuery = "SELECT ID, Name, PhoneNumber, Email, officeAddress, employmentStartDate, type FROM TblEmployee JOIN TblPerson ON TblEmployee.ID = TblPerson.ID WHERE type = ?";
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement employeeStmt = connection.prepareStatement(employeeQuery)) {
+
+            employeeStmt.setString(1, EmployeeType.MARKETING.name().toLowerCase()); // מגדירים את סוג העובד לשיווק
+            try (ResultSet employeeRs = employeeStmt.executeQuery()) {
+                while (employeeRs.next()) {
+                    int id = employeeRs.getInt("ID");
+                    String name = employeeRs.getString("Name");
+                    int phoneNumber = employeeRs.getInt("PhoneNumber");
+                    String email = employeeRs.getString("Email");
+                    String officeAddress = employeeRs.getString("officeAddress");
+                    Date employmentStartDate = employeeRs.getDate("employmentStartDate");
+                    String typeStr = employeeRs.getString("type");
+                    EmployeeType type = null;
+
+                    if (typeStr != null) {
+                        try {
+                            type = EmployeeType.valueOf(typeStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Unknown employee type: " + typeStr);
+                        }
+                    }
+
+                    Employee employee = new Employee(id, name, phoneNumber, email, employmentStartDate, officeAddress, type);
+                    employees.add(employee);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees; // מחזירים את רשימת עובדי השיווק
+    }
+
+    
+    public ArrayList<Employee> getSalesEmployees() {
+        String employeeQuery = "SELECT ID, Name, PhoneNumber, Email, officeAddress, employmentStartDate, type FROM TblEmployee JOIN TblPerson ON TblEmployee.ID = TblPerson.ID WHERE type = ?";
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement employeeStmt = connection.prepareStatement(employeeQuery)) {
+
+            employeeStmt.setString(1, EmployeeType.SALES.name().toLowerCase()); // מגדירים את סוג העובד למכירות
+            try (ResultSet employeeRs = employeeStmt.executeQuery()) {
+                while (employeeRs.next()) {
+                    int id = employeeRs.getInt("ID");
+                    String name = employeeRs.getString("Name");
+                    int phoneNumber = employeeRs.getInt("PhoneNumber");
+                    String email = employeeRs.getString("Email");
+                    String officeAddress = employeeRs.getString("officeAddress");
+                    Date employmentStartDate = employeeRs.getDate("employmentStartDate");
+                    String typeStr = employeeRs.getString("type");
+                    EmployeeType type = null;
+
+                    if (typeStr != null) {
+                        try {
+                            type = EmployeeType.valueOf(typeStr.toUpperCase());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Unknown employee type: " + typeStr);
+                        }
+                    }
+
+                    Employee employee = new Employee(id, name, phoneNumber, email, employmentStartDate, officeAddress, type);
+                    employees.add(employee);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employees; // מחזירים את רשימת עובדי המכירות
+    }
+
+    public int countUrgentOrders(Employee employee, Date startDate, Date endDate) {
+        String query = "SELECT COUNT(IIF(TblOrder.orderDate BETWEEN ? AND ? AND TblUrgentOrder.orderNumber IS NOT NULL, 1, NULL)) AS UrgentOrders " +
+                       "FROM TblUrgentOrder RIGHT JOIN (SalesEmployees INNER JOIN (TblRegularOrder RIGHT JOIN TblOrder ON TblRegularOrder.orderNumber = TblOrder.orderNumber) " +
+                       "ON SalesEmployees.ID = TblOrder.AssignedSaleEmployeeID) ON TblUrgentOrder.orderNumber = TblOrder.orderNumber " +
+                       "WHERE SalesEmployees.ID = ?";
+
+        int urgentOrders = 0;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setDate(1, new java.sql.Date(startDate.getTime()));  // StartDate
+            stmt.setDate(2, new java.sql.Date(endDate.getTime()));    // EndDate
+            stmt.setInt(3, employee.getID());  // Employee ID מתוך האובייקט
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    urgentOrders = rs.getInt("UrgentOrders");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return urgentOrders; // מחזירים את מספר ההזמנות הדחופות
+    }
+    
+    public int countRegularOrders(Employee employee, Date startDate, Date endDate) {
+        String query = "SELECT COUNT(IIF(TblOrder.orderDate BETWEEN ? AND ? AND TblRegularOrder.orderNumber IS NOT NULL, 1, NULL)) AS RegularOrders " +
+                       "FROM TblUrgentOrder RIGHT JOIN (SalesEmployees INNER JOIN (TblRegularOrder RIGHT JOIN TblOrder ON TblRegularOrder.orderNumber = TblOrder.orderNumber) " +
+                       "ON SalesEmployees.ID = TblOrder.AssignedSaleEmployeeID) ON TblUrgentOrder.orderNumber = TblOrder.orderNumber " +
+                       "WHERE SalesEmployees.ID = ?";
+
+        int regularOrders = 0;
+
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setDate(1, new java.sql.Date(startDate.getTime()));  // StartDate
+            stmt.setDate(2, new java.sql.Date(endDate.getTime()));    // EndDate
+            stmt.setInt(3, employee.getID());  // Employee ID מתוך האובייקט
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    regularOrders = rs.getInt("RegularOrders");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return regularOrders; // מחזירים את מספר ההזמנות הרגילות
+    }
+
+    
+
 }

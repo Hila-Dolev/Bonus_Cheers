@@ -29,7 +29,8 @@ public class HomeScreen extends JFrame{
 	private JMenuItem menuItemImport = new JMenuItem("Import Data");
     private JMenuItem menuItemWines = new JMenuItem("Wines");
     private JMenuItem menuItemManufacturers = new JMenuItem("Manufacturers");
-    private JMenuItem menuItemPreferencesReport = new JMenuItem("Preferences Report");  
+    private JMenuItem menuItemPreferencesReport = new JMenuItem("Preferences Report"); 
+    private JMenuItem menuItemUnproductiveEmployeesReport = new JMenuItem("Unproductive Employees Report");
     private JMenu menuOrders = new JMenu("Orders");
     private JMenuItem menuItemRegularOrder = new JMenuItem("Regular Order");
     private JMenuItem menuItemUrgentOrder = new JMenuItem("Urgent Order");
@@ -99,7 +100,11 @@ public class HomeScreen extends JFrame{
         menuBar.add(menuItemManufacturers);
 
         menuItemPreferencesReport.addActionListener(e -> openPreferencesReportScreen());  
-        menuReports.add(menuItemPreferencesReport);  
+        menuReports.add(menuItemPreferencesReport); 
+        
+        menuItemUnproductiveEmployeesReport.addActionListener(e -> openNonProductiveEmployeeReportScreen());
+        menuReports.add(menuItemUnproductiveEmployeesReport);
+
         
         // הוספת אפשרויות לתפריט
         menuOrders.add(menuItemRegularOrder);
@@ -246,8 +251,7 @@ public class HomeScreen extends JFrame{
     
     
     public void configureForRole(String role) {
-        // הסתרת הכל כברירת מחדל
-    	menuItemWines.setVisible(false);
+    	menuItemUnproductiveEmployeesReport.setVisible(false);
 
         // הצגת מה שרלוונטי לתפקיד
         switch (role) {
@@ -255,7 +259,7 @@ public class HomeScreen extends JFrame{
             	menuItemWines.setVisible(true);
                 break;
             case "Sales":
-            	menuItemWines.setVisible(true);
+            	menuItemUnproductiveEmployeesReport.setVisible(true);
                 break;
             case "Customer":
             	menuItemWines.setVisible(true);
@@ -268,7 +272,7 @@ public class HomeScreen extends JFrame{
     
     private void openRegularOrderScreen() {
         System.out.println("Opening Regular Order screen...");
-        FrmRegularOrder regularOrderScreen = new FrmRegularOrder();
+        FrmOrder regularOrderScreen = new FrmOrder();
         desktopPane.add(regularOrderScreen);
         regularOrderScreen.moveToFront();
         regularOrderScreen.setVisible(true);
@@ -283,7 +287,13 @@ public class HomeScreen extends JFrame{
     }*/
 
 
-
+    private void openNonProductiveEmployeeReportScreen() {
+        System.out.println("Navigating to NonProductiveEmployeeReportScreen...");
+        NonProductiveEmployeeReportScreen reportScreen = new NonProductiveEmployeeReportScreen(); 
+        desktopPane.add(reportScreen);
+        reportScreen.moveToFront();
+        reportScreen.setVisible(true);
+    }
 
 
 

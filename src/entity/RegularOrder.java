@@ -9,10 +9,17 @@ public class RegularOrder extends Order {
 	
 	//Constructor
 	public RegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int mainCustomerID,
-			ArrayList<CustomerRegularOrder> customers) {
-		super(orderNumber, orderDate, status, shipmentDate);
+			ArrayList<CustomerRegularOrder> customers, int assignedSaleEmployeeID) {
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
 		this.mainCustomerID = mainCustomerID;
 		this.customers = customers;
+	}
+	
+	
+	public RegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int mainCustomerID, int assignedSaleEmployeeID) {
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
+		this.mainCustomerID = mainCustomerID;
+		this.customers = new ArrayList<CustomerRegularOrder>();
 	}
 
 	public RegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
@@ -37,6 +44,10 @@ public class RegularOrder extends Order {
 	}
 	 
 	 public void addCustomer(Customer customer) {
+		 if (customers == null) {
+		        customers = new ArrayList<>();
+		    }
+		 
 	        CustomerRegularOrder cro = new CustomerRegularOrder(customer, this);
 	        customers.add(cro);
 	        customer.getOrders().add(cro);

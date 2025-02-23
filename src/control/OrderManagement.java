@@ -4,22 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
-import entity.Order;
-import entity.OrderStatus;
-import entity.PriorityLevel;
 import entity.RegularOrder;
 import entity.UrgentOrder;
+import entity.Order;
+import entity.OrderStatus;
 
 public class OrderManagement {
-    
+
     private static OrderManagement instance;
-    private ArrayList<Order> ordersList = new ArrayList<Order>();
-    
+    private static ArrayList<Order> ordersList = new ArrayList<>();
+
+    public static OrderManagement getInstance() {
+        if (instance == null) {
+            instance = new OrderManagement();
+        }
+        return instance;
+    }
+
     public ArrayList<Order> getOrdersList() {
         return ordersList;
     }
@@ -28,186 +31,147 @@ public class OrderManagement {
         this.ordersList = ordersList;
     }
 
-    public static OrderManagement getInstance() {
-        if (instance == null) {
-            // אם האובייקט לא קיים, יוצר אותו
-            instance = new OrderManagement();
-        }
-        return instance;
-    }
-
     public static ArrayList<Order> getAllOrders() {
-        ArrayList<Order> ordersList = new ArrayList<>();
-        String query = "SELECT * FROM TblOrder"; // שם הטבלה עבור ההזמנות
+    String query = "SELECT * FROM TblOrder";
+    String regularOrderCheckQuery = "SELECT * FROM TblRegularOrder WHERE orderNumber = ?";
+    String urgentOrderCheckQuery = "SELECT * FROM TblUrgentOrder WHERE orderNumber = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+    try (Connection connection = DatabaseConnection.getConnection();
+         PreparedStatement stmt = connection.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()) {
 
-        	while (rs.next()) {
-                int orderNumber = rs.getInt("orderNumber");
-                Date orderDate = rs.getDate("orderDate");
+        while (rs.next()) {
+            int orderNumber = rs.getInt("orderNumber");
+            int assignedSaleEmployeeID = rs.getInt("AssignedSaleEmployeeID"); // קבלת המזהה של העובד
 
-                String statusFromDb = rs.getString("status");
-                OrderStatus status = OrderStatus.valueOf(statusFromDb.replace(" ", "_")); // כאן המרה
-
-                Date shipmentDate = rs.getDate("shipmentDate");
-
-                // בודקים אם ההזמנה היא רגילה או דחופה
-                RegularOrder regularOrder = getRegularOrder(orderNumber, orderDate, status, shipmentDate);
-                if (regularOrder != null) {
-                    ordersList.add(regularOrder);
-                } else {
-                    UrgentOrder urgentOrder = getUrgentOrder(orderNumber, orderDate, status, shipmentDate);
-                    if (urgentOrder != null) {
-                        ordersList.add(urgentOrder);
+            // בדוק אם ההזמנה קיימת בטבלת הזמנות רגילות
+            try (PreparedStatement checkRegularStmt = connection.prepareStatement(regularOrderCheckQuery)) {
+                checkRegularStmt.setInt(1, orderNumber);
+                try (ResultSet regularRs = checkRegularStmt.executeQuery()) {
+                    if (regularRs.next()) {
+                        // יצירת RegularOrder עם AssignedSaleEmployeeID
+                        Order order = new RegularOrder(
+                            orderNumber,
+                            rs.getDate("orderDate"),
+                            OrderStatus.valueOf(rs.getString("status")),
+                            rs.getDate("shipmentDate"),
+                            assignedSaleEmployeeID,
+                            regularRs.getInt("mainCustomerID") // אם יש צורך במידע נוסף
+                        );
+                        ordersList.add(order);
                     }
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        return ordersList;
-    }
-    
-    private static RegularOrder getRegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
-        String query = "SELECT * FROM TblRegularOrder WHERE orderNumber = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, orderNumber);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int mainCustomerID = rs.getInt("MainCustomerID");
-                // ניצור את ההזמנה הרגילה
-                return new RegularOrder(orderNumber, orderDate, status, shipmentDate, mainCustomerID, new ArrayList<>());
+            // בדוק אם ההזמנה קיימת בטבלת הזמנות דחופות
+            try (PreparedStatement checkUrgentStmt = connection.prepareStatement(urgentOrderCheckQuery)) {
+                checkUrgentStmt.setInt(1, orderNumber);
+                try (ResultSet urgentRs = checkUrgentStmt.executeQuery()) {
+                    if (urgentRs.next()) {
+                        // יצירת UrgentOrder עם AssignedSaleEmployeeID
+                        Order order = new UrgentOrder(
+                            orderNumber,
+                            rs.getDate("orderDate"),
+                            OrderStatus.valueOf(rs.getString("status")),
+                            rs.getDate("shipmentDate"),
+                            assignedSaleEmployeeID
+                        );
+                        ordersList.add(order);
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
-    private static UrgentOrder getUrgentOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
-        String query = "SELECT * FROM TblUrgentOrder WHERE orderNumber = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+    return ordersList;
+}
 
-            stmt.setInt(1, orderNumber);
-            ResultSet rs = stmt.executeQuery();
+    public void createNewOrder(Order order) throws SQLException {
+    String checkSql = "SELECT COUNT(*) FROM TblOrder WHERE orderNumber = ?";
+    String insertSql = "INSERT INTO TblOrder (orderNumber, orderDate, status, shipmentDate, AssignedSaleEmployeeID) VALUES (?, ?, ?, ?, ?)";
+    String insertRegularOrderSql = "INSERT INTO TblRegularOrder (orderNumber, mainCustomerID) VALUES (?, ?)";
+    String insertUrgentOrderSql = "INSERT INTO TblUrgentOrder (orderNumber) VALUES (?)";
 
-            if (rs.next()) {
-            	 int priorityLevelInt = rs.getInt("PriorityLevel");
-        	    PriorityLevel priorityLevel = PriorityLevel.fromInt(priorityLevelInt);  // המרת int ל-enum
-        	    int expectedDeliveryTime = rs.getInt("ExpectedDeliveryTime");
-                int customerID = rs.getInt("CustomerID");
-                return new UrgentOrder(orderNumber, orderDate, status, shipmentDate, priorityLevel, expectedDeliveryTime, customerID);
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setInt(1, order.getOrderNumber());
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    try (PreparedStatement stmt = conn.prepareStatement(insertSql)) {
+                        stmt.setInt(1, order.getOrderNumber());
+                        stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
+                        stmt.setString(3, order.getStatus().toString());
+                        stmt.setDate(4, new java.sql.Date(order.getShipmentDate().getTime()));
+                        stmt.setInt(5, order.getAssignedSaleEmployeeID()); // הוספת ה-AssignedSaleEmployeeID
+                        stmt.executeUpdate();
+                    }
+
+                    // אם ההזמנה היא RegularOrder
+                    if (order instanceof RegularOrder) {
+                        try (PreparedStatement regularStmt = conn.prepareStatement(insertRegularOrderSql)) {
+                            regularStmt.setInt(1, order.getOrderNumber());
+                            regularStmt.setInt(2, ((RegularOrder) order).getMainCustomerID());
+                            regularStmt.executeUpdate();
+                        }
+                    }
+                    // אם ההזמנה היא UrgentOrder
+                    else if (order instanceof UrgentOrder) {
+                        try (PreparedStatement urgentStmt = conn.prepareStatement(insertUrgentOrderSql)) {
+                            urgentStmt.setInt(1, order.getOrderNumber());
+                            urgentStmt.executeUpdate();
+                        }
+                    }
+                } else {
+                    System.out.println("Order with orderNumber " + order.getOrderNumber() + " already exists.");
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     public static void updateOrder(Order order) throws SQLException {
-        String updateSql = "UPDATE TblOrder SET orderDate = ?, status = ?, shipmentDate = ? WHERE orderNumber = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+    if (order == null) {
+        throw new IllegalArgumentException("Order cannot be null.");
+    }
 
+    try (Connection connection = DatabaseConnection.getConnection()) {
+        String sql = "UPDATE TblOrder SET orderDate = ?, status = ?, shipmentDate = ?, AssignedSaleEmployeeID = ? WHERE orderNumber = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
             stmt.setString(2, order.getStatus().toString());
             stmt.setDate(3, new java.sql.Date(order.getShipmentDate().getTime()));
-            stmt.setInt(4, order.getOrderNumber());
+            stmt.setInt(4, order.getAssignedSaleEmployeeID()); // עדכון AssignedSaleEmployeeID
+            stmt.setInt(5, order.getOrderNumber());
 
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("Error while updating order: " + e.getMessage());
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
-    public static void createNewOrder(Order order) throws SQLException {
-        String insertSql = "INSERT INTO TblOrder (orderNumber, orderDate, status, shipmentDate) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(insertSql)) {
-
-            stmt.setInt(1, order.getOrderNumber());
-            stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
-            stmt.setString(3, order.getStatus().toString());
-            stmt.setDate(4, new java.sql.Date(order.getShipmentDate().getTime()));
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("Error while inserting order: " + e.getMessage());
-        }
-
-        if (order instanceof RegularOrder) {
-            createRegularOrder((RegularOrder) order);
-        } else if (order instanceof UrgentOrder) {
-            createUrgentOrder((UrgentOrder) order);
-        }
-    }
-
-    private static void createRegularOrder(RegularOrder regularOrder) throws SQLException {
-        String insertSql = "INSERT INTO TblRegularOrder (orderNumber, MainCustomerID) VALUES (?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(insertSql)) {
-
-            stmt.setInt(1, regularOrder.getOrderNumber());
-            stmt.setInt(2, regularOrder.getMainCustomerID());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("Error while inserting regular order: " + e.getMessage());
-        }
-    }
-
-    private static void createUrgentOrder(UrgentOrder urgentOrder) throws SQLException {
-        String insertSql = "INSERT INTO TblUrgentOrder (orderNumber, PriorityLevel, ExpectedDeliveryTime, CustomerID) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(insertSql)) {
-
-            stmt.setInt(1, urgentOrder.getOrderNumber());
-            stmt.setInt(2, urgentOrder.getPriorityLevel().getValue());
-            stmt.setInt(3, urgentOrder.getExpectedDeliveryTime());
-            stmt.setInt(4, urgentOrder.getCustomerID());
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException("Error while inserting urgent order: " + e.getMessage());
-        }
-    }
-
-    public static ArrayList<RegularOrder> getAllRegularOrders() {
-        ArrayList<RegularOrder> regularOrdersList = new ArrayList<>();
-        String query = "SELECT * FROM TblRegularOrder"; // שינוי שם הטבלה אם יש צורך
-
+    public void deleteOrder(int orderNumber) {
+        String query = "DELETE FROM TblOrder WHERE orderNumber = ?";
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = connection.prepareStatement(query)) {
 
-            while (rs.next()) {
-                int orderNumber = rs.getInt("orderNumber");
-                Date orderDate = rs.getDate("orderDate");
-                OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
-                Date shipmentDate = rs.getDate("shipmentDate");
-                int mainCustomerID = rs.getInt("MainCustomerID");
-
-                // יצירת אובייקט RegularOrder והוספה לרשימה
-                RegularOrder regularOrder = new RegularOrder(orderNumber, orderDate, status, shipmentDate, mainCustomerID, new ArrayList<>());
-                regularOrdersList.add(regularOrder);
+            stmt.setInt(1, orderNumber);
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                System.out.println("No order found with orderNumber " + orderNumber);
+            } else {
+                System.out.println("Order with orderNumber " + orderNumber + " was deleted successfully.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return regularOrdersList;
     }
 
-
+    
+    
+    
 }

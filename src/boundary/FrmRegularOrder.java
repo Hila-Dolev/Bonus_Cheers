@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
  public class FrmRegularOrder extends FrmOrder {
      private JButton btnMergeOrder;
+     private JButton btnSaveOrder;
      
      public FrmRegularOrder() {
          super();
@@ -26,7 +27,13 @@ import java.util.ArrayList;
          btnMergeOrder.setFont(new Font("Arial", Font.BOLD, 13));
          add(btnMergeOrder);
          btnMergeOrder.addActionListener(e -> openMergeDialog());
-     }
+         
+         btnSaveOrder = new JButton("Save Order");
+         btnSaveOrder.setBounds(400, 250, 150, 30);
+         btnSaveOrder.setFont(new Font("Arial", Font.BOLD, 13));
+         add(btnSaveOrder);
+         btnSaveOrder.addActionListener(e -> saveRegularOrder());
+         }
      
         
      /*public void mergeOrder() {
@@ -104,6 +111,26 @@ import java.util.ArrayList;
          }
 
      
+     
+     public void saveRegularOrder() {
+         // שליפת נתונים מהשדות
+         int orderNumber = Integer.parseInt(txtOrderNumber.getText());
+         int customerId = Integer.parseInt(txtCustomerId.getText());  // ייתכן שתצטרך להוסיף שדה כזה אם הוא לא קיים
+         Date orderDate = Date.valueOf(txtOrderDate.getText()); // תאריך הזמנה, נניח שהלקוח הכניס תאריך בפורמט YYYY-MM-DD
+
+         // יצירת HashMap של היינות והכמויות
+         HashMap<Integer, Integer> wineQuantities = new HashMap<>();
+         // כאן יש להוסיף קוד לאיסוף היינות הנבחרים והכמויות שלהם
+         for (Wine wine : selectedWines) {
+             wineQuantities.put(wine.getWineId(), wine.getQuantity());  // נניח ש- Wine מכיל getWineId() ו-getQuantity()
+         }
+
+         // יצירת אובייקט RegularOrder עם הנתונים שנאספו
+         RegularOrder regularOrder = new RegularOrder(orderNumber, customerId, orderDate, wineQuantities);
+
+         // קריאה לפונקציה לשמירת ההזמנה במסד הנתונים
+         OrderManagement.saveRegularOrder(regularOrder);
+     }
      
      
  }
