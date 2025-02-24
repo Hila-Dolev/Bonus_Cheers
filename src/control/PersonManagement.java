@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import entity.Person;
@@ -330,6 +331,88 @@ public class PersonManagement {
         return regularOrders; // מחזירים את מספר ההזמנות הרגילות
     }
 
-    
+    public boolean addNewCustomer(Customer customer) {
+        String personInsertQuery = "INSERT INTO TblPerson (ID, Name, PhoneNumber, Email) VALUES (?, ?, ?, ?)";
+        String customerInsertQuery = "INSERT INTO TblCustomer (ID, delivaryAddress, dateOfFirstContact) VALUES (?, ?, ?)";
+
+        Connection connection = null;
+        PreparedStatement personStmt = null;
+        PreparedStatement customerStmt = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            // Start a transaction to ensure atomicity (both inserts should succeed or fail together)
+            connection.setAutoCommit(false);
+
+            // Inserting into TblPerson using Customer's parent class data (Person)
+            personStmt = connection.prepareStatement(personInsertQuery);
+            personStmt.setInt(1, customer.getID());  // Set the ID manually
+            personStmt.setString(2, customer.getName());  // From Person class
+            personStmt.setInt(3, customer.getPhoneNumber());  // From Person class
+            personStmt.setString(4, customer.getEmail());  // From Person class
+            personStmt.executeUpdate();
+
+            // Inserting into TblCustomer using the provided ID
+            customerStmt = connection.prepareStatement(customerInsertQuery);
+            customerStmt.setInt(1, customer.getID());  // Use the same ID for the customer
+            customerStmt.setString(2, customer.getDeliveryAddress());
+            
+            // כאן אנחנו משתמשים במתודת removeTime שתסיר את השעה מהתאריך
+            java.sql.Date sqlDate = removeTime(customer.getDateOfFirstContact());
+            customerStmt.setDate(3, sqlDate);  // הכנסה של התאריך עם שעה 00:00:00
+
+            int rowsAffected = customerStmt.executeUpdate();
+
+            // Commit the transaction if both insertions were successful
+            if (rowsAffected > 0) {
+                connection.commit();
+                return true;  // The customer was successfully added
+            } else {
+                connection.rollback();
+                return false;  // Failed to insert into TblCustomer
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                if (connection != null) {
+                    connection.rollback();  // Rollback the transaction in case of an error
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            return false;  // Return false if an error occurred
+
+        } finally {
+            try {
+                if (personStmt != null) {
+                    personStmt.close();
+                }
+                if (customerStmt != null) {
+                    customerStmt.close();
+                }
+                if (connection != null) {
+                    connection.setAutoCommit(true);  // Restore the default auto-commit behavior
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public java.sql.Date removeTime(java.util.Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);  // לא מתחשב בשעה
+        cal.set(Calendar.MINUTE, 0);        // לא מתחשב בדקות
+        cal.set(Calendar.SECOND, 0);        // לא מתחשב בשניות
+        cal.set(Calendar.MILLISECOND, 0);   // לא מתחשב במילישניות
+        return new java.sql.Date(cal.getTimeInMillis());
+    }
+
+
+
 
 }

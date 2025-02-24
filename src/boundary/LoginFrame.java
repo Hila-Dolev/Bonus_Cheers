@@ -13,6 +13,7 @@ import javax.swing.text.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -131,6 +132,16 @@ public class LoginFrame extends JFrame {
         JButton btnCustomerLogin = new JButton("Login as Customer");
         btnCustomerLogin.setBounds(220, 160, 150, 30);
         contentPane.add(btnCustomerLogin);
+        
+        JButton btnRegister = new JButton("Customer Registration");
+        btnRegister.setBounds(135, 200, 180, 30);
+        btnRegister.setBackground(Color.decode("#e4d1c3"));
+        btnRegister.setForeground(buttonColor);
+        btnRegister.setBorderPainted(false);  // מסיר את הגבול מהכפתור
+        btnRegister.setFocusPainted(false);  // מסיר את ההדגשה כאשר יש פוקוס על הכפתור
+        btnRegister.setFont(new Font("Assistant", Font.BOLD, 14));
+        contentPane.add(btnRegister);
+
 
         btnEmployeeLogin.addActionListener(new ActionListener() {
             @Override
@@ -145,6 +156,9 @@ public class LoginFrame extends JFrame {
                 handleLogin(false);
             }
         });
+        
+        btnRegister.addActionListener(e -> openCustomerRegistration());
+        
     }
 
     private void handleLogin(boolean isEmployee) {
@@ -231,6 +245,10 @@ public class LoginFrame extends JFrame {
     }
 
 
+    private void openCustomerRegistration() {
+        CustomerRegistrationDialog registerDialog = new CustomerRegistrationDialog(this);
+        registerDialog.setVisible(true);
+    }
 
 
 }
