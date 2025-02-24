@@ -122,7 +122,7 @@ public class HomeScreen extends JFrame{
 	     menuItemRegularOrder.addActionListener(e -> openRegularOrderScreen());
 	
 	     // חיבור כפתור "Urgent Order" לפתיחת מסך הזמנה דחופה
-	     //menuItemUrgentOrder.addActionListener(e -> openUrgentOrderScreen());
+	     menuItemUrgentOrder.addActionListener(e -> openUrgentOrderScreen());
 
 
         menuBar.setBackground(textColor);
@@ -292,19 +292,19 @@ public class HomeScreen extends JFrame{
     
     private void openRegularOrderScreen() {
         System.out.println("Opening Regular Order screen...");
-        FrmOrder regularOrderScreen = new FrmOrder();
+        FrmRegularOrder regularOrderScreen = new FrmRegularOrder();
         desktopPane.add(regularOrderScreen);
         regularOrderScreen.moveToFront();
         regularOrderScreen.setVisible(true);
     }
 
-    /*private void openUrgentOrderScreen() {
+    private void openUrgentOrderScreen() {
         System.out.println("Opening Urgent Order screen...");
         FrmUrgentOrder urgentOrderScreen = new FrmUrgentOrder();
         desktopPane.add(urgentOrderScreen);
         urgentOrderScreen.moveToFront();
         urgentOrderScreen.setVisible(true);
-    }*/
+    }
 
 
     private void openNonProductiveEmployeeReportScreen() {

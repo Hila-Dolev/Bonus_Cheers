@@ -7,24 +7,24 @@ public class UrgentOrder extends Order {
 	private PriorityLevel priorityLevel;
 	private int expectedDeliveryTime;
 	private int customerID;
-	private HashMap<Wine, Integer> winesInUrgentOrder;
+	private HashMap<Wine, Integer> wineQuantities;
 	
 	//Constructors
 	public UrgentOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate,
-			PriorityLevel priorityLevel, int expectedDeliveryTime, int customerID,
+			int assignedSaleEmployeeID, PriorityLevel priorityLevel, int expectedDeliveryTime, int customerID,
 			HashMap<Wine, Integer> winesInUrgentOrder) {
-		super(orderNumber, orderDate, status, shipmentDate);
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
 		this.priorityLevel = priorityLevel;
 		this.expectedDeliveryTime = expectedDeliveryTime;
 		this.customerID = customerID;
-		this.winesInUrgentOrder = winesInUrgentOrder;
+		this.wineQuantities = winesInUrgentOrder;
 	}
 	
 	
 	
 	public UrgentOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate,
-			PriorityLevel priorityLevel, int expectedDeliveryTime, int customerID) {
-		super(orderNumber, orderDate, status, shipmentDate);
+			int assignedSaleEmployeeID, PriorityLevel priorityLevel, int expectedDeliveryTime, int customerID) {
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
 		this.priorityLevel = priorityLevel;
 		this.expectedDeliveryTime = expectedDeliveryTime;
 		this.customerID = customerID;
@@ -32,8 +32,8 @@ public class UrgentOrder extends Order {
 
 
 
-	public UrgentOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
-		super(orderNumber, orderDate, status, shipmentDate);
+	public UrgentOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int assignedSaleEmployeeID) {
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
 	}
 
 
@@ -61,14 +61,14 @@ public class UrgentOrder extends Order {
 
 
 
-	public HashMap<Wine, Integer> getWinesInUrgentOrder() {
-		return winesInUrgentOrder;
+	public HashMap<Wine, Integer> getWinesQuantities() {
+		return wineQuantities;
 	}
 
 
 
-	public void setWinesInUrgentOrder(HashMap<Wine, Integer> winesInUrgentOrder) {
-		this.winesInUrgentOrder = winesInUrgentOrder;
+	public void setWinesQuantities(HashMap<Wine, Integer> winesInUrgentOrder) {
+		this.wineQuantities = winesInUrgentOrder;
 	}
 	
 	

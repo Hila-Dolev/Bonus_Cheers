@@ -2,28 +2,25 @@ package boundary;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
-import control.OrderManagement;
 import control.PersonManagement;
 import entity.Customer;
 import entity.Order;
-import entity.Wine;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FrmOrder extends JInternalFrame {
-    private JTextField txtCustomerID, txtCustomerName, txtCustomerAddress, txtOrderNumber, txtAssignedSaleEmployeeID;
-    private JButton btnPreferences;
-    JButton btnSaveOrder = new JButton("Save Order");
-    JButton btnDeleteOrder = new JButton("Delete Order");
-    JButton btnUpdateOrder = new JButton("Update Order");
-    JButton btnCreateOrder = new JButton("Create Order");
-    JButton btnSearchOrder = new JButton("Search Order");
-    private JPanel wineSelectionPanel;
-    private HashMap<String, JSpinner> wineQuantitySpinners;
-    private JDateChooser orderDateChooser;
+	protected  JTextField txtCustomerID, txtCustomerName, txtCustomerAddress, txtOrderNumber, txtAssignedSaleEmployeeID;
+	protected  JButton btnPreferences;
+	protected JButton btnSaveOrder = new JButton("Save");
+	protected JButton btnDeleteOrder = new JButton("Delete");
+	protected JButton btnCreateOrder = new JButton("Create");
+	protected JTextField searchOrderField = new JTextField(15);
+	protected JButton btnSearchOrder = new JButton("Search");
+	protected JButton btnPreviousOrder = new JButton("<<");
+	protected JButton btnNextOrder = new JButton(">>");
+	protected JDateChooser orderDateChooser;
 
     // רשימה של הזמנות ומצב של הזמנה נוכחית
     private ArrayList<Order> orders;
@@ -35,7 +32,7 @@ public class FrmOrder extends JInternalFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
 
-        JPanel formPanel = new JPanel();
+        JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setLayout(new GridBagLayout());
         formPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -91,52 +88,54 @@ public class FrmOrder extends JInternalFrame {
 
         add(formPanel, BorderLayout.NORTH);
 
-        // Wine Selection Panel
-        wineSelectionPanel = new JPanel();
-        wineSelectionPanel.setLayout(new GridLayout(0, 2, 5, 5));
-        JScrollPane scrollPane = new JScrollPane(wineSelectionPanel);
-        add(scrollPane, BorderLayout.CENTER);
-        wineQuantitySpinners = new HashMap<>();
+     // שינוי ל-GridBagLayout בכדי לשלוט בצורה גמישה יותר על מיקום הכפתורים
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcButtonPanel = new GridBagConstraints();
+        buttonPanel.setBackground(Color.WHITE);
 
-        // Buttons Panel
-        JPanel buttonPanel = new JPanel();
-        btnPreferences = new JButton("בחר העדפות יין");
+        // הוספת כפתור "Pick Wine Preferences" בשורה נפרדת
+        btnPreferences = new JButton("Pick Wine Preferences");
         btnPreferences.addActionListener(e -> openPreferencesScreen());
-        buttonPanel.add(btnPreferences);
-        
-        buttonPanel.add(btnSaveOrder);
-        btnSaveOrder.addActionListener(e -> {
-            // לוגיקה לשמירה
-        });
+        gbcButtonPanel.gridx = 0;
+        gbcButtonPanel.gridy = 0;
+        gbcButtonPanel.gridwidth = 2; // כפתור זה יתפוס שתי תאים
+        buttonPanel.add(btnPreferences, gbcButtonPanel);
 
-        buttonPanel.add(btnDeleteOrder);
-        btnDeleteOrder.addActionListener(e -> {
-            // לוגיקה למחיקה
-        });
+        // הוספת כפתורי "Save", "Delete", ו-"Create" בשורות נוספות
+        gbcButtonPanel.gridwidth = 1; // כל כפתור יתפוס תא אחד
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 1;
+        buttonPanel.add(btnSaveOrder, gbcButtonPanel);
+        btnSaveOrder.addActionListener(e -> {});
 
-        buttonPanel.add(btnUpdateOrder);
-        btnUpdateOrder.addActionListener(e -> {
-            // לוגיקה לעדכון
-        });
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 2;
+        buttonPanel.add(btnDeleteOrder, gbcButtonPanel);
+        btnDeleteOrder.addActionListener(e -> {});
 
-        buttonPanel.add(btnCreateOrder);
-        btnCreateOrder.addActionListener(e -> {
-            // לוגיקה ליצירה חדשה
-        });
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 3;
+        buttonPanel.add(btnCreateOrder, gbcButtonPanel);
+        btnCreateOrder.addActionListener(e -> {});
 
-        buttonPanel.add(btnSearchOrder);
-        btnSearchOrder.addActionListener(e -> {
-            // לוגיקה לחיפוש
-        });
+        // הוספת השדות לחיפוש בשורה נפרדת
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 4;
+        buttonPanel.add(new JLabel("Search:"), gbcButtonPanel);
 
-        // הוספת כפתורי ניווט בין הזמנות
-        JButton btnNextOrder = new JButton(">>");
-        btnNextOrder.addActionListener(e -> nextOrder());
-        JButton btnPreviousOrder = new JButton("<<");
-        btnPreviousOrder.addActionListener(e -> previousOrder());
-        buttonPanel.add(btnPreviousOrder);
-        buttonPanel.add(btnNextOrder);
+        gbcButtonPanel.gridx = 1; gbcButtonPanel.gridy = 4;
+        buttonPanel.add(searchOrderField, gbcButtonPanel);
 
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 5;
+        buttonPanel.add(btnSearchOrder, gbcButtonPanel);
+        btnSearchOrder.addActionListener(e -> {});
+
+        // הוספת כפתורי הניווט (Next/Previous) בשורה נוספת
+        gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 6;
+        buttonPanel.add(btnPreviousOrder, gbcButtonPanel);
+
+
+        gbcButtonPanel.gridx = 1; gbcButtonPanel.gridy = 6;
+        buttonPanel.add(btnNextOrder, gbcButtonPanel);
+
+
+        // הוספת panel הממשק לכפתורים
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
@@ -168,7 +167,6 @@ public class FrmOrder extends JInternalFrame {
         txtOrderNumber.setText(Integer.toString(order.getOrderNumber()));
         txtAssignedSaleEmployeeID.setText(Integer.toString(order.getAssignedSaleEmployeeID()));
         orderDateChooser.setDate(order.getOrderDate());
-        updateWineList(order.getWines());
     }
 
     private void nextOrder() {
@@ -189,20 +187,6 @@ public class FrmOrder extends JInternalFrame {
         this.orders = orders;
         currentOrderIndex = 0;
         loadOrderDetails();
-    }
-
-    private void updateWineList(ArrayList<Wine> selectedWines) {
-        wineSelectionPanel.removeAll();
-        wineQuantitySpinners.clear();
-        for (Wine wine : selectedWines) {
-            JLabel wineName = new JLabel(wine.getName());
-            JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
-            wineSelectionPanel.add(wineName);
-            wineSelectionPanel.add(quantitySpinner);
-            wineQuantitySpinners.put(wine.getName(), quantitySpinner);
-        }
-        wineSelectionPanel.revalidate();
-        wineSelectionPanel.repaint();
     }
 
     private void openPreferencesScreen() {

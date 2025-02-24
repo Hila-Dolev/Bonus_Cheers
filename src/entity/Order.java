@@ -11,14 +11,7 @@ public abstract class Order {
 	protected int AssignedSaleEmployeeID;
 	
 	//Constructors
-	public Order(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
-		super();
-		this.orderNumber = orderNumber;
-		this.orderDate = orderDate;
-		this.status = status;
-		this.shipmentDate = shipmentDate;
-	}
-	
+
 	public Order(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int assignedSaleEmployeeID) {
 		super();
 		this.orderNumber = orderNumber;
