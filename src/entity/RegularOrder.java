@@ -22,8 +22,8 @@ public class RegularOrder extends Order {
 		this.customers = new ArrayList<CustomerRegularOrder>();
 	}
 
-	public RegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate) {
-		super(orderNumber, orderDate, status, shipmentDate);
+	public RegularOrder(int orderNumber, Date orderDate, OrderStatus status, Date shipmentDate, int assignedSaleEmployeeID) {
+		super(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID);
 	}
 
 	//Getters & Setters

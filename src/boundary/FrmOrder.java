@@ -7,6 +7,8 @@ import control.PersonManagement;
 import entity.Customer;
 import entity.Order;
 import entity.OrderStatus; // יש להוסיף את ה-import עבור ה-ENUM
+import entity.Wine;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -204,10 +206,14 @@ public class FrmOrder extends JInternalFrame {
         loadOrderDetails();
     }
 
-    private void openPreferencesScreen() {
+    public void openPreferencesScreen() {
         FrmWinesPreferences preferencesScreen = new FrmWinesPreferences(this);
         getParent().add(preferencesScreen);
         preferencesScreen.setVisible(true);
         preferencesScreen.toFront();
+    }
+
+    public void updateWineList (ArrayList<Wine> preferredWines) {
+    	
     }
 }

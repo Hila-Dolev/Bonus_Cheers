@@ -107,13 +107,7 @@ public class FrmWinesPreferences extends JInternalFrame {
             }
         });
         
-        btnUpdatePreferredWines = new JButton("Update Preferred Wines");
-        btnUpdatePreferredWines.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updatePreferredWinesInOrder();  // פעולה לעדכון היינות
-            }
-        });
+        
         
      // הגדרת הגבלה לכל כפתור עם הוספת רווחים
         gbc.gridx = 0;
@@ -132,10 +126,18 @@ public class FrmWinesPreferences extends JInternalFrame {
         gbc.gridy = 1;
         panelButtons.add(btnShowReport, gbc);
         
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        panelButtons.add(btnUpdatePreferredWines, gbc);
+      
         
+     // הכפתור יוצג רק אם המסך נפתח מתוך FrmOrder
+        if (orderScreen != null) {
+            btnUpdatePreferredWines = new JButton("Update Preferred Wines");
+            btnUpdatePreferredWines.addActionListener(e -> updatePreferredWinesInOrder());
+            
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            panelButtons.add(btnUpdatePreferredWines, gbc);
+        }
+
         // הוספת פאנל הכפתורים למסך
         add(panelButtons, BorderLayout.SOUTH);
         setVisible(true);
@@ -152,7 +154,7 @@ public class FrmWinesPreferences extends JInternalFrame {
         }
         
         if (orderScreen != null) {
-            orderScreen.updateWineList(preferredWines); // יש לוודא ש-`orderScreen` כוללת את המתודה `updateWines`
+            orderScreen.updateWineList(preferredWines); 
         }
         
         this.dispose();
