@@ -1,26 +1,29 @@
 package boundary;
 
 import javax.swing.*;
+import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 import control.PersonManagement;
 import entity.Customer;
 import entity.Order;
+import entity.OrderStatus; // יש להוסיף את ה-import עבור ה-ENUM
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class FrmOrder extends JInternalFrame {
-	protected  JTextField txtCustomerID, txtCustomerName, txtCustomerAddress, txtOrderNumber, txtAssignedSaleEmployeeID;
-	protected  JButton btnPreferences;
-	protected JButton btnSaveOrder = new JButton("Save");
-	protected JButton btnDeleteOrder = new JButton("Delete");
-	protected JButton btnCreateOrder = new JButton("Create");
-	protected JTextField searchOrderField = new JTextField(15);
-	protected JButton btnSearchOrder = new JButton("Search");
-	protected JButton btnPreviousOrder = new JButton("<<");
-	protected JButton btnNextOrder = new JButton(">>");
-	protected JDateChooser orderDateChooser;
+    protected  JTextField txtCustomerID, txtCustomerName, txtCustomerAddress, txtOrderNumber, txtAssignedSaleEmployeeID;
+    protected  JButton btnPreferences;
+    protected JButton btnSaveOrder = new JButton("Save");
+    protected JButton btnDeleteOrder = new JButton("Delete");
+    protected JButton btnCreateOrder = new JButton("Create");
+    protected JTextField searchOrderField = new JTextField(15);
+    protected JButton btnSearchOrder = new JButton("Search");
+    protected JButton btnPreviousOrder = new JButton("<<");
+    protected JButton btnNextOrder = new JButton(">>");
+    protected JDateChooser orderDateChooser;
+    protected JComboBox<OrderStatus> cmbOrderStatus; // הוספת ה-CMB סטטוס הזמנה
 
     // רשימה של הזמנות ומצב של הזמנה נוכחית
     private ArrayList<Order> orders;
@@ -76,7 +79,7 @@ public class FrmOrder extends JInternalFrame {
         formPanel.add(new JLabel("Assigned Sale Employee ID:"), gbc);
         gbc.gridx = 1;
         txtAssignedSaleEmployeeID = new JTextField(15);
-        txtAssignedSaleEmployeeID.setEditable(false);
+        txtAssignedSaleEmployeeID.setEditable(true);
         formPanel.add(txtAssignedSaleEmployeeID, gbc);
 
         // Order Date
@@ -84,11 +87,24 @@ public class FrmOrder extends JInternalFrame {
         formPanel.add(new JLabel("Order Date:"), gbc);
         gbc.gridx = 1;
         orderDateChooser = new JDateChooser();
+        orderDateChooser.setDateFormatString("dd/MM/yyyy"); 
+        orderDateChooser.setPreferredSize(new Dimension(150, 25));
         formPanel.add(orderDateChooser, gbc);
 
+        // סטטוס הזמנה - ComboBox
+        gbc.gridx = 0; gbc.gridy = 6;
+        formPanel.add(new JLabel("Order Status:"), gbc);
+        gbc.gridx = 1;
+        cmbOrderStatus = new JComboBox<>(OrderStatus.values()); // אתחול ה-ComboBox
+        formPanel.add(cmbOrderStatus, gbc);
+
+        // גישה לשינוי צבעי רכיבי הלוח שנה
+        JCalendar calendar = orderDateChooser.getJCalendar();
+        calendar.getDayChooser().setForeground(Color.WHITE);  // צבע טקסט של הימים
+        
         add(formPanel, BorderLayout.NORTH);
 
-     // שינוי ל-GridBagLayout בכדי לשלוט בצורה גמישה יותר על מיקום הכפתורים
+        // שינוי ל-GridBagLayout בכדי לשלוט בצורה גמישה יותר על מיקום הכפתורים
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcButtonPanel = new GridBagConstraints();
         buttonPanel.setBackground(Color.WHITE);
@@ -130,10 +146,8 @@ public class FrmOrder extends JInternalFrame {
         gbcButtonPanel.gridx = 0; gbcButtonPanel.gridy = 6;
         buttonPanel.add(btnPreviousOrder, gbcButtonPanel);
 
-
         gbcButtonPanel.gridx = 1; gbcButtonPanel.gridy = 6;
         buttonPanel.add(btnNextOrder, gbcButtonPanel);
-
 
         // הוספת panel הממשק לכפתורים
         add(buttonPanel, BorderLayout.SOUTH);
@@ -167,6 +181,7 @@ public class FrmOrder extends JInternalFrame {
         txtOrderNumber.setText(Integer.toString(order.getOrderNumber()));
         txtAssignedSaleEmployeeID.setText(Integer.toString(order.getAssignedSaleEmployeeID()));
         orderDateChooser.setDate(order.getOrderDate());
+        cmbOrderStatus.setSelectedItem(order.getStatus()); // עדכון הסטטוס בקומבו בוקס
     }
 
     private void nextOrder() {

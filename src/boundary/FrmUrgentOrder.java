@@ -5,6 +5,7 @@ import com.toedter.calendar.JDateChooser;
 import control.OrderManagement;
 import control.PersonManagement;
 import entity.Customer;
+import entity.OrderStatus;
 import entity.UrgentOrder;
 import entity.Wine;
 import entity.PriorityLevel;  // הוספתי את PriorityLevel
@@ -26,20 +27,21 @@ public class FrmUrgentOrder extends FrmOrder {
         super();  // קריאה לקונסטרוקטור של FrmOrder
         setTitle("Urgent Order");
         setSize(790, 520);
+        setLayout(new BorderLayout(5, 5));
+
 
         // הוספת רכיבי FrmOrder למסך היורש (כעת למעלה)
-        JPanel orderDetailsPanel = new JPanel();
-        orderDetailsPanel.setLayout(new GridBagLayout());
+        JPanel orderDetailsPanel = new JPanel(new GridBagLayout());
         orderDetailsPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(4, 4, 4, 4);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
 
         // Customer ID
-        gbc.gridx = 0; gbc.gridy = 0;
-        orderDetailsPanel.add(new JLabel("Customer ID:"), gbc);
-        gbc.gridx = 1;
-        orderDetailsPanel.add(txtCustomerID, gbc);
+        int row = 0;
+        orderDetailsPanel.add(new JLabel("Customer ID:"), setGBC(gbc, 0, row));
+        orderDetailsPanel.add(txtCustomerID, setGBC(gbc, 1, row++));
         txtCustomerID.setEditable(false);  // הגדרת השדה כלא ניתן לעריכה
 
 
@@ -72,11 +74,23 @@ public class FrmUrgentOrder extends FrmOrder {
         orderDetailsPanel.add(new JLabel("Order Date:"), gbc);
         gbc.gridx = 1;
         orderDetailsPanel.add(orderDateChooser, gbc);
-
+        
+     // Order Status - ComboBox
+        gbc.gridx = 0; gbc.gridy = 6;
+        orderDetailsPanel.add(new JLabel("Order Status:"), gbc); // הוספת תווית "סטטוס הזמנה"
+        gbc.gridx = 1;
+        cmbOrderStatus = new JComboBox<>(OrderStatus.values()); // אתחול ה-ComboBox
+        orderDetailsPanel.add(cmbOrderStatus, gbc); // הוספת ה-ComboBox לפאנל פרטי ההזמנה
+        
         add(orderDetailsPanel, BorderLayout.NORTH);  // הוספת פאנל העליון
 
-        // עדכון כפתורי הניווט
         JPanel buttonPanel = new JPanel();
+        //btnPreferences.addActionListener(e -> openPreferences());
+        btnSaveOrder.addActionListener(e -> saveOrder());
+        btnDeleteOrder.addActionListener(e -> deleteOrder());
+        btnCreateOrder.addActionListener(e -> createOrder());
+        btnSearchOrder.addActionListener(e -> searchOrder());
+
         buttonPanel.add(btnPreferences);
         buttonPanel.add(btnSaveOrder);
         buttonPanel.add(btnDeleteOrder);
@@ -94,36 +108,54 @@ public class FrmUrgentOrder extends FrmOrder {
         buttonPanel.add(btnNextOrder);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // יצירת פאנל חדש לפרטי הזמנה דחופה (כעת למטה)
+     // יצירת פאנל חדש לפרטי הזמנה דחופה (כעת למטה)
         JPanel urgentPanel = new JPanel();
         urgentPanel.setLayout(new GridBagLayout());
         urgentPanel.setBackground(Color.WHITE);
+       // GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); // מרווחים גדולים יותר
 
-        // Urgency Level
+     // Urgency Level
         gbc.gridx = 0; gbc.gridy = 0;
         urgentPanel.add(new JLabel("Urgency Level:"), gbc);
         gbc.gridx = 1;
-        
-        cmbUrgencyLevel = new JComboBox<>(PriorityLevel.values()); // ComboBox עם כל הערכים
+        cmbUrgencyLevel = new JComboBox<>(PriorityLevel.values());
         urgentPanel.add(cmbUrgencyLevel, gbc);
 
-        // Expected Delivery Time
+     /// Expected Delivery Time
         gbc.gridx = 0; gbc.gridy = 1;
         urgentPanel.add(new JLabel("Expected Delivery Time (days):"), gbc);
         gbc.gridx = 1;
-        txtExpectedDeliveryTime = new JTextField(15);
+        txtExpectedDeliveryTime = new JTextField();
+        txtExpectedDeliveryTime.setPreferredSize(new Dimension(200, 30)); // גודל מועדף
+        txtExpectedDeliveryTime.setMinimumSize(new Dimension(200, 30)); // גודל מינימלי
+        txtExpectedDeliveryTime.setMaximumSize(new Dimension(400, 30)); // גודל מקסימלי
         urgentPanel.add(txtExpectedDeliveryTime, gbc);
 
-        // Wines in Order (Displayed as TextArea)
+     // Wines in Order (Displayed as TextArea)
         gbc.gridx = 0; gbc.gridy = 2;
         urgentPanel.add(new JLabel("Wines in the Order:"), gbc);
         gbc.gridx = 1;
-        txtWinesInOrder = new JTextArea(5, 20);
+
+        // יצירת JTextArea עם גודל מותאם
+        txtWinesInOrder = new JTextArea(8, 25); // מספר שורות
         txtWinesInOrder.setEditable(false);
+        txtWinesInOrder.setPreferredSize(new Dimension(400, 150)); // גודל מועדף
+        txtWinesInOrder.setMinimumSize(new Dimension(400, 150)); // גודל מינימלי
+        txtWinesInOrder.setMaximumSize(new Dimension(600, 200)); // גודל מקסימלי
+
+        // יצירת JScrollPane והוספת JTextArea לתוכו
         JScrollPane scrollPane = new JScrollPane(txtWinesInOrder);
+        scrollPane.setPreferredSize(new Dimension(400, 150)); // גודל מותאם ל-SCROLLPANE
+
         urgentPanel.add(scrollPane, gbc);
 
-        add(urgentPanel, BorderLayout.CENTER);  // הוספת פאנל התחתון
+
+
+
+
+        // הוספת פאנל התחתון
+        add(urgentPanel, BorderLayout.CENTER);
 
         loadOrders();  // טעינת הזמנות דחופות
     }
@@ -149,6 +181,11 @@ public class FrmUrgentOrder extends FrmOrder {
             // מילוי פרטי ההזמנה הכללית
             txtOrderNumber.setText(String.valueOf(currentOrder.getOrderNumber()));  // מספר הזמנה
             txtCustomerID.setText(String.valueOf(currentOrder.getCustomerID()));  // מזהה לקוח
+
+            // עדכון ComboBox של סטטוס ההזמנה
+            if (currentOrder.getStatus() != null) {
+                cmbOrderStatus.setSelectedItem(currentOrder.getStatus());
+            }
 
             // בדיקת האם הלקוח קיים
             Customer customer = PersonManagement.getInstance().getCustomerDetailsById(currentOrder.getCustomerID());
@@ -214,4 +251,75 @@ public class FrmUrgentOrder extends FrmOrder {
         }
         loadOrderDetails();  // עדכון הפרטים למסך
     }
+    
+    public void saveOrder() {
+    try {
+        // קריאה לכלל השדות במסך
+        int orderNumber = Integer.parseInt(txtOrderNumber.getText().trim());
+        java.util.Date utilDate = orderDateChooser.getDate();
+        java.sql.Date orderDate = new java.sql.Date(utilDate.getTime());
+        
+        // קריאה למצב ההזמנה
+        OrderStatus status = (OrderStatus) cmbOrderStatus.getSelectedItem();
+        
+        // קריאה לתאריך המשלוח
+        java.util.Date shipmentDateUtil = orderDateChooser.getDate();
+        java.sql.Date shipmentDate = new java.sql.Date(shipmentDateUtil.getTime());
+        
+        // קריאה למספר עובד מכירות שהוקצה להזמנה
+        int assignedSaleEmployeeID = Integer.parseInt(txtAssignedSaleEmployeeID.getText().trim());
+        
+        // קריאה לרמת הדחיפות
+        PriorityLevel priorityLevel = (PriorityLevel) cmbUrgencyLevel.getSelectedItem();
+        
+        // קריאה לזמן האספקה הצפוי
+        int expectedDeliveryTime = Integer.parseInt(txtExpectedDeliveryTime.getText().trim());
+        
+        // קריאה למספר הלקוח
+        int customerID = Integer.parseInt(txtCustomerID.getText().trim());
+        
+        // קריאה לרשימת היינות בהזמנה
+        HashMap<Wine, Integer> winesInOrder = OrderManagement.getInstance().getWinesInUrgentOrder(orderNumber);
+        if (winesInOrder == null || winesInOrder.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No wines selected for this order!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // יצירת אובייקט הזמנה דחופה חדש
+        UrgentOrder newOrder = new UrgentOrder(orderNumber, orderDate, status, shipmentDate, assignedSaleEmployeeID, priorityLevel, expectedDeliveryTime, customerID, winesInOrder);
+
+        // שמירה למסד הנתונים
+        boolean success = OrderManagement.getInstance().saveUrgentOrder(newOrder);
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Order saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadOrders(); // רענון הרשימה לאחר השמירה
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to save order!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(this, "Invalid number format! Please check all numeric fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        ex.printStackTrace();
+    }
+}
+
+    private void deleteOrder() {
+        // לוגיקה למחיקת הזמנה
+    }
+
+    private void createOrder() {
+        // לוגיקה ליצירת הזמנה חדשה
+    }
+
+    private void searchOrder() {
+        // לוגיקה לחיפוש הזמנה
+    }
+    
+    private GridBagConstraints setGBC(GridBagConstraints gbc, int x, int y) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+        return gbc;
+    }
+
 }

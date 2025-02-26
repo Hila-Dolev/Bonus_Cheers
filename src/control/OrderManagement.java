@@ -109,7 +109,7 @@ public class OrderManagement {
     }
 
 */
-    public void createNewOrder(Order order) throws SQLException {
+   /* public void createNewOrder(Order order) throws SQLException {
     String checkSql = "SELECT COUNT(*) FROM TblOrder WHERE orderNumber = ?";
     String insertSql = "INSERT INTO TblOrder (orderNumber, orderDate, status, shipmentDate, AssignedSaleEmployeeID) VALUES (?, ?, ?, ?, ?)";
     String insertRegularOrderSql = "INSERT INTO TblRegularOrder (orderNumber, mainCustomerID) VALUES (?, ?)";
@@ -153,6 +153,8 @@ public class OrderManagement {
         e.printStackTrace();
     }
 }
+
+*/
 
     public static void updateOrder(Order order) throws SQLException {
     if (order == null) {
@@ -268,6 +270,77 @@ public class OrderManagement {
         return wineQuantities;  // החזרת ה-HashMap המלא
     }
 
-    
+public boolean saveUrgentOrder(UrgentOrder urgentOrder) {
+    String insertOrderQuery = "INSERT INTO TblOrder (orderNumber, orderDate, status, shipmentDate, AssignedSaleEmployeeID) " +
+                              "VALUES (?, ?, ?, ?, ?)";
+
+    String insertUrgentOrderQuery = "INSERT INTO TblUrgentOrder (orderNumber, priorityLevel, expectedDeliveryTime, customerID) " +
+                                    "VALUES (?, ?, ?, ?)";
+
+    String insertWineQuery = "INSERT INTO TblWinesInUrgentOrder (OrderNumber, CatalogNumber, Quantity) VALUES (?, ?, ?)";
+
+    Connection connection = null;
+    try {
+        connection = DatabaseConnection.getConnection();
+        connection.setAutoCommit(false); // הפעלת טרנזקציה
+
+        // הוספת הזמנה לטבלה הכללית
+        try (PreparedStatement stmtOrder = connection.prepareStatement(insertOrderQuery)) {
+            stmtOrder.setInt(1, urgentOrder.getOrderNumber());
+            stmtOrder.setDate(2, new java.sql.Date(urgentOrder.getOrderDate().getTime()));
+            stmtOrder.setString(3, urgentOrder.getStatus().name().replace("_", " "));
+            stmtOrder.setDate(4, urgentOrder.getShipmentDate() != null ? new java.sql.Date(urgentOrder.getShipmentDate().getTime()) : null);
+            stmtOrder.setInt(5, urgentOrder.getAssignedSaleEmployeeID());
+
+            stmtOrder.executeUpdate();
+        }
+
+        // הוספת הפרטים הייחודיים להזמנה דחופה
+        try (PreparedStatement stmtUrgent = connection.prepareStatement(insertUrgentOrderQuery)) {
+            stmtUrgent.setInt(1, urgentOrder.getOrderNumber());
+            stmtUrgent.setInt(2, urgentOrder.getPriorityLevel().getValue());
+            stmtUrgent.setInt(3, urgentOrder.getExpectedDeliveryTime());
+            stmtUrgent.setInt(4, urgentOrder.getCustomerID());
+
+            stmtUrgent.executeUpdate();
+        }
+
+        // הוספת היינות והכמויות שלהם לטבלת TblWinesInUrgentOrder
+        if (urgentOrder.getWinesQuantities() != null && !urgentOrder.getWinesQuantities().isEmpty()) {
+            try (PreparedStatement stmtWine = connection.prepareStatement(insertWineQuery)) {
+                for (HashMap.Entry<Wine, Integer> entry : urgentOrder.getWinesQuantities().entrySet()) {
+                    stmtWine.setInt(1, urgentOrder.getOrderNumber());
+                    stmtWine.setInt(2, entry.getKey().getCatalogNumber());
+                    stmtWine.setInt(3, entry.getValue());
+                    stmtWine.addBatch(); // הוספת הפעולה לבאץ' לשיפור ביצועים
+                }
+                stmtWine.executeBatch();
+            }
+        }
+
+        connection.commit(); // אישור כל הפעולות בטרנזקציה
+        return true;
+    } catch (SQLException e) {
+        System.err.println("Error while saving urgent order: " + e.getMessage());
+        if (connection != null) {
+            try {
+                connection.rollback(); // במקרה של שגיאה, ביטול כל השינויים
+                System.err.println("Transaction rolled back.");
+            } catch (SQLException rollbackEx) {
+                System.err.println("Rollback failed: " + rollbackEx.getMessage());
+            }
+        }
+        return false;
+    } finally {
+        if (connection != null) {
+            try {
+                connection.close(); // סגירת החיבור לבסיס הנתונים
+            } catch (SQLException closeEx) {
+                System.err.println("Failed to close connection: " + closeEx.getMessage());
+            }
+        }
+    }
+}
+
 
 }
