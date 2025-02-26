@@ -36,6 +36,7 @@ public class FrmWine extends JInternalFrame {
 	private JButton btnSearchWine;
 	private JPanel buttonPanel = new JPanel(new FlowLayout());
 	
+	
 	private JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>(); 
 
 	private JComboBox<Integer> wineTypeComboBox = new JComboBox<>();
@@ -151,6 +152,7 @@ public class FrmWine extends JInternalFrame {
         
         
         buttonPanel.add(new JLabel("Search:"));
+        searchWineField.setName("searchWineField");
         buttonPanel.add(searchWineField);
         
         buttonPanel.add(btnSearchWine);
@@ -445,6 +447,7 @@ public class FrmWine extends JInternalFrame {
 	        }
 	    });
 	}
+	
 
 	
 

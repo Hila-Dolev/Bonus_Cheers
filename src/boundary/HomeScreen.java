@@ -2,6 +2,8 @@ package boundary;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -18,6 +20,9 @@ import control.GefenImport;
 import entity.WineType;
 
 import javax.swing.border.LineBorder;
+
+import com.toedter.calendar.JYearChooser;
+
 import javax.swing.border.Border;
 
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class HomeScreen extends JFrame{
     private JLabel logoLabel = new JLabel();
     private JDesktopPane desktopPane = new JDesktopPane(); 
     private JPanel buttonPanel;
+    private String role;
     
     
     public static void main(String[] args) {
@@ -111,8 +117,9 @@ public class HomeScreen extends JFrame{
 
         
         // הוספת אפשרויות לתפריט
-        menuOrders.add(menuItemRegularOrder);
         menuOrders.add(menuItemUrgentOrder);
+        menuOrders.add(menuItemRegularOrder);
+        
         
         menuBar.add(menuOrders);
         menuBar.add(menuReports);  
@@ -209,6 +216,11 @@ public class HomeScreen extends JFrame{
         desktopPane.add(winesScreen);         
         winesScreen.moveToFront();            
         winesScreen.setVisible(true); 
+        
+        if ("Sales".equals(role)) {
+            disableEditing(winesScreen);
+        }
+        
         /*
         // ברגע שנסגר המסך, הכפתורים יוחזרו
         winesScreen.addInternalFrameListener(new javax.swing.event.InternalFrameAdapter() {
@@ -271,6 +283,7 @@ public class HomeScreen extends JFrame{
     
     
     public void configureForRole(String role) {
+    	this.role = role;
     	menuItemUnproductiveEmployeesReport.setVisible(false);
 
         // הצגת מה שרלוונטי לתפקיד
@@ -282,7 +295,10 @@ public class HomeScreen extends JFrame{
             	menuItemUnproductiveEmployeesReport.setVisible(true);
                 break;
             case "Customer":
-            	menuItemWines.setVisible(true);
+            	menuItemImport.setVisible(false);
+            	menuItemWines.setVisible(false);
+            	menuItemManufacturers.setVisible(false);
+            	menuReports.setVisible(false);
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Unauthorized role: " + role);
@@ -321,6 +337,55 @@ public class HomeScreen extends JFrame{
         desktopPane.add(inventoryReportScreen);
         inventoryReportScreen.moveToFront();
         inventoryReportScreen.setVisible(true);
+    }
+
+    private void disableEditing(FrmWine winesScreen) {
+        // מניעת עריכה של כל השדות במסך היין
+        setEditableForAllComponents(winesScreen, false);
+    }
+
+    private void setEditableForAllComponents(Container container, boolean editable) {
+        for (Component comp : container.getComponents()) {
+            // אם הרכיב הוא JTextField, נבדוק אם זה שדה החיפוש
+            if (comp instanceof JTextField) {
+                JTextField textField = (JTextField) comp;
+                // נניח ששדה החיפוש הוא עם שם "searchField"
+                if ("searchWineField".equals(textField.getName())) {
+                    textField.setEditable(true);  // שדה החיפוש נשאר נגיש
+                } else {
+                    textField.setEditable(editable);  // שדות אחרים יהיו תלויים בתפקיד
+                }
+            } else if (comp instanceof JTextArea) {
+                ((JTextArea) comp).setEditable(editable); // מבטל/מאפשר עריכה
+            } else if (comp instanceof JPasswordField) {
+                ((JPasswordField) comp).setEditable(editable); // מבטל/מאפשר עריכה
+            } else if (comp instanceof JComboBox) {
+                JComboBox comboBox = (JComboBox) comp;
+                // מבטל את האפשרות לשנות את הערך ב- JComboBox
+                comboBox.setEnabled(editable);  // ניתן להפעיל/לנטרל את ה- JComboBox
+            } else if (comp instanceof JYearChooser) {
+                JYearChooser yearChooser = (JYearChooser) comp;
+                // מבטל את האפשרות לבחור שנה ב-JYearChooser
+                yearChooser.setEnabled(editable);  // מבטל/מאפשר את השימוש ב-JYearChooser
+            } else if (comp instanceof JButton) {
+                JButton button = (JButton) comp;
+                // אם הכפתור הוא כפתור ה-Delete, נניח שאתה נותן לו מזהה ייחודי, לדוגמה:
+                if (button.getText().equals("Delete")) {
+                    button.setEnabled(editable);  // מבטל/מאפשר את כפתור ה-Delete
+                }
+                if (button.getText().equals("Save")) {
+                    button.setEnabled(editable);  // מבטל/מאפשר את כפתור ה-Delete
+                }
+                if (button.getText().equals("Create")) {
+                    button.setEnabled(editable);  // מבטל/מאפשר את כפתור ה-Delete
+                }
+            }
+
+            // אם יש רכיבי פנימיים כמו JPanel, JScrollPane, או כל container אחר
+            if (comp instanceof Container) {
+                setEditableForAllComponents((Container) comp, editable);  // חוזר על רכיבי Container פנימיים
+            }
+        }
     }
 
 
